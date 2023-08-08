@@ -16,6 +16,7 @@ import Signup from '../pages/signup/Signup';
 const Router = () => {
   return (
     <Routes>
+      <Route path="/" element={<Pets />}></Route>
       <Route path="/community" element={<Community />}></Route>
       <Route path="/community/:id" element={<CommunityDetail />}></Route>
       <Route path="/community/edit" element={<CommunityEdit />}></Route>
