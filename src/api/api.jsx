@@ -8,7 +8,7 @@ export async function fetchData() {
     '=' +
     encodeURIComponent('9RFjRc/Z+k7QyU9ji73gFB3PKb3VFuioIAN/S7dm2MbcvfODYwaJrRiEnFroeMh2C3TOTgfpEHL6xnLB2tcV9g==') +
     '&' +
-    encodeURIComponent('numOfRows') +
+    encodeURIComponent('json') +
     '=' +
     encodeURIComponent('3') +
     '&' +
