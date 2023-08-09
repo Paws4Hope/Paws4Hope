@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import { addList } from '../../redux/modules/lists';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 const AddList = () => {
   //
@@ -16,15 +18,14 @@ const AddList = () => {
   const [newComments, setNewComments] = useState();
 
   //
-  const onAddHandler = () => {
+  const onAddHandler = async () => {
     const newList = {
-      id: nanoid(),
-      img: '',
       title: newTitle,
       guardian: newGuardian,
       companionAnimal: newCompanionAnimal,
       comments: newComments
     };
+
     dispatch(addList(newList));
     navigate('/community');
   };

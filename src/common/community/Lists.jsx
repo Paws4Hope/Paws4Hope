@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { deleteList } from '../../redux/modules/lists';
 import { useSelector, useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase';
 
 const Lists = () => {
   const lists = useSelector((state) => state.lists);
@@ -15,21 +13,6 @@ const Lists = () => {
   const onDeleteHandler = (id) => {
     dispatch(deleteList(id));
   };
-
-  //
-  const getLists = async () => {
-    const querySnapshot = await getDocs(collection(db, 'lists'));
-    querySnapshot.forEach((doc) => {
-      // 가져온 모든 문서들을 확인
-      console.log(doc.id, ' => ', doc.data());
-    });
-    console.log('querySnapshot', querySnapshot);
-    return querySnapshot;
-  };
-
-  useEffect(() => {
-    getLists();
-  }, []);
 
   return (
     <>
