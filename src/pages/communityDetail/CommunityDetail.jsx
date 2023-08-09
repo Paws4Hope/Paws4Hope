@@ -1,7 +1,7 @@
 import React from 'react';
 
 const CommunityDetail = () => {
-  return <div></div>;
+  return <div>CommunityDetail</div>;
 };
 
 export default CommunityDetail;

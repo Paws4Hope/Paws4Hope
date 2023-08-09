@@ -1,7 +1,12 @@
 import React from 'react';
+import AddList from '../../common/community/AddList';
 
 const CommunityPost = () => {
-  return <div></div>;
+  return (
+    <>
+      <AddList />
+    </>
+  );
 };
 
 export default CommunityPost;
