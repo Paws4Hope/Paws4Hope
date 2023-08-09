@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { AnimalKindApi, AnimalApi, SidoApi, Sigungu } from '../../api/api';
+import { AnimalKindApi, AnimalApi, SidoApi, SigunguApi } from '../../api/api';
 
 function Pets() {
-  const { data, status } = useQuery(['animalApi'], Sigungu);
+  const { data, status } = useQuery(['animalApi'], AnimalKindApi);
 
   if (status === 'loading') {
     return <p>Loading...</p>;

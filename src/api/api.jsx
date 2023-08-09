@@ -42,7 +42,7 @@ export async function SidoApi() {
 }
 
 /** 2) [시/군/구] - 오픈API 유기동물 데이터 조회  */
-export async function Sigungu() {
+export async function SigunguApi() {
   const url = `${BASE_URL}/sigungu`;
   const queryParams = '?' + encodeURIComponent('upr_cd') + '=' + encodeURIComponent(6110000) + DATA_API_KEY;
 
@@ -50,8 +50,8 @@ export async function Sigungu() {
   return response.data;
 }
 
-/** 3SZDXF GHJKL) [보호소] - 오픈API 유기동물 데이터 조회  */
-export async function Shelter() {
+/** 3) [보호소] - 오픈API 유기동물 데이터 조회  */
+export async function ShelterApi() {
   const url = `${BASE_URL}/shelter`;
   const queryParams =
     '?' +
