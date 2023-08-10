@@ -1,7 +1,12 @@
 import React from 'react';
+import { EditList } from '../../common';
 
 const CommunityEdit = () => {
-  return <div></div>;
+  return (
+    <>
+      <EditList />
+    </>
+  );
 };
 
 export default CommunityEdit;
