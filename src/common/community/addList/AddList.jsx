@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addList } from '../../../api/lists';
 import moment from 'moment';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, QueryClient, useQueryClient } from '@tanstack/react-query';
 import Upload from '../Upload';
 import useInput from '../../../hooks/useInput';
 import { Button } from '../../../components';
@@ -13,7 +13,7 @@ const AddList = () => {
   // 시간
   const nowTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
-  const queryClient = useQueryClient();
+  const queryClient = new QueryClient();
 
   const mutation = useMutation(addList, {
     onSuccess: () => {
