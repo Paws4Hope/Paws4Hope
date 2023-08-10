@@ -1,21 +1,17 @@
-// src/components/SignUp.js
-import { useState } from 'react';
-import { auth, db } from '../../firebase';
-import { createUserWithEmailAndPassword, updatePhoneNumber, updateProfile } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import * as S from './SignUp.styled';
+import { auth } from '../../firebase';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { validateEmail, validatePassword, validateNickname, validatePhone } from '../siginup/validation';
 import useInput from '../../hooks/useInput';
 import { useNavigate } from 'react-router-dom';
+import ButtonGoogle from '../../assets/images/btn_google.svg';
+import ImageSignUp from '../../assets/images/img_signup.png';
+import { Link } from 'react-router-dom';
 
 function SignUp() {
   const navigate = useNavigate();
 
-  const [{ email, password, passwordVerify, nickname, phone }, onChange] = useInput('');
-
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [nickname, setNickname] = useState('');
-  // const [phone, setPhone] = useState('');
+  const [{ email, password, passwordVerify, nickname }, onChange] = useInput('');
 
   const handleSignUp = async () => {
     if (!validateEmail(email)) {
@@ -33,10 +29,10 @@ function SignUp() {
       return;
     }
 
-    if (!validatePhone(phone)) {
-      alert('올바른 전화번호를 입력해주세요');
-      return;
-    }
+    // if (!validatePhone(phone)) {
+    //   alert('올바른 전화번호를 입력해주세요');
+    //   return;
+    // }
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -55,21 +51,50 @@ function SignUp() {
   };
 
   return (
-    <div>
-      <h2>회원가입</h2>
-      <input type="email" name="email" value={email} onChange={onChange} placeholder="이메일" />
-      <input type="password" name="password" value={password} onChange={onChange} placeholder="비밀번호" />
-      <input
-        type="password"
-        name="passwordVerify"
-        value={passwordVerify}
-        onChange={onChange}
-        placeholder="비밀번호 확인"
-      />
-      <input type="text" name="nickname" value={nickname} onChange={onChange} placeholder="닉네임" />
-      <input type="tel" name="phone" value={phone} onChange={onChange} placeholder="전화번호" />
-      <button onClick={handleSignUp}>회원가입</button>
-    </div>
+    <S.Layout>
+      <S.LeftWrapper>
+        <S.Image src={ImageSignUp} alt="회원가입 이미지" />
+      </S.LeftWrapper>
+      <S.RightWrapper>
+        <S.Card>
+          <S.Title>회원가입</S.Title>
+          <S.ButtonGoogle>
+            <img src={ButtonGoogle} alt="Button Google" />
+          </S.ButtonGoogle>
+          <S.DivisionLine>
+            <S.DivisionText>또는 이메일 로그인</S.DivisionText>
+          </S.DivisionLine>
+
+          <S.InputItem>
+            <S.Label htmlFor="nickname">닉네임:</S.Label>
+            <S.Input type="text" name="nickname" value={nickname} onChange={onChange} />
+          </S.InputItem>
+
+          <S.InputItem>
+            <S.Label htmlFor="email">이메일:</S.Label>
+            <S.Input type="email" name="email" value={email} onChange={onChange} />
+          </S.InputItem>
+
+          <S.InputItem>
+            <S.Label htmlFor="password">비밀번호:</S.Label>
+            <S.Input type="password" name="password" value={password} onChange={onChange} />
+          </S.InputItem>
+
+          <S.InputItem>
+            <S.Label htmlFor="passwordVerify">비밀번호 확인:</S.Label>
+            <S.Input type="password" name="passwordVerify" value={passwordVerify} onChange={onChange} />
+          </S.InputItem>
+
+          <S.AuthLink>
+            이미 회원이신가요?
+            <Link to="/login">
+              <S.ButtonText>로그인</S.ButtonText>
+            </Link>
+          </S.AuthLink>
+          <button onClick={handleSignUp}>회원가입</button>
+        </S.Card>
+      </S.RightWrapper>
+    </S.Layout>
   );
 }
 

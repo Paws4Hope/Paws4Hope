@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { validateEmail, validatePassword } from '../siginup/validation';
+import ButtonGoogle from '../../assets/images/btn_google.svg';
+import { Link } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -31,24 +33,37 @@ function Login() {
     <S.Layout>
       <S.LeftWrapper></S.LeftWrapper>
       <S.RightWrapper>
-        <div>
-          <h1>로그인</h1>
-          <div>
-            <label htmlFor="email">이메일:</label>
-            <input type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          </div>
-          <div>
-            <label htmlFor="password">비밀번호:</label>
-            <input
+        <S.Card>
+          <S.Title>로그인</S.Title>
+          <S.ButtonGoogle>
+            <img src={ButtonGoogle} alt="Button Google" />
+          </S.ButtonGoogle>
+          <S.DivisionLine>
+            <S.DivisionText>또는 이메일 로그인</S.DivisionText>
+          </S.DivisionLine>
+          <S.InputItem>
+            <S.Label htmlFor="email">이메일:</S.Label>
+            <S.Input type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </S.InputItem>
+
+          <S.InputItem>
+            <S.Label htmlFor="password">비밀번호:</S.Label>
+            <S.Input
               type="password"
               name="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-          </div>
+          </S.InputItem>
+          <S.AuthLink>
+            아직 회원이 아니신가요?
+            <Link to="/signup">
+              <S.ButtonText>회원가입</S.ButtonText>
+            </Link>
+          </S.AuthLink>
           <button onClick={handleLogin}>로그인</button>
-        </div>
+        </S.Card>
       </S.RightWrapper>
     </S.Layout>
   );
