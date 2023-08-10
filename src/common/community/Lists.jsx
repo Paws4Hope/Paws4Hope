@@ -1,17 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import { deleteList } from '../../redux/modules/lists';
-import { useSelector, useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getLists, useDelete } from '../../api/lists';
+import { deleteList } from '../../api/lists';
+import { useMutation, QueryClient } from '@tanstack/react-query';
 
 const Lists = () => {
-  const lists = useSelector((state) => state.lists);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  //
-  const onDeleteHandler = (id) => {
-    dispatch(deleteList(id));
+  //쿼리!!!!!
+  const { isLoading, isError, data } = useQuery(['lists'], getLists);
+
+  console.log('data', data);
+
+  /*
+  if (status === 'loading') {
+    return <p>Loading...</p>;
+  }
+
+  if (status === 'error') {
+    return <p>Error fetching data</p>;
+  }
+  */
+
+  // 쿼리!!
+  // 전역역
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(deleteList, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['lists']);
+    }
+  });
+
+  const orderedData = data?.sort((a, b) => new Date(b.time) - new Date(a.time));
+
+  console.log('ordered', orderedData);
+  //scroll
+  const MoveToTop = () => {
+    // top:0 >> 맨위로  behavior:smooth >> 부드럽게 이동할수 있게 설정하는 속성
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -24,7 +52,8 @@ const Lists = () => {
         >
           추가
         </button>
-        {lists?.map((item) => {
+        <br />
+        {orderedData?.map((item) => {
           return (
             <List key={item.id}>
               <div>
@@ -38,9 +67,11 @@ const Lists = () => {
               </div>
 
               <p>{item.comments}</p>
+              <span>{item.time}</span>
+              <br />
               <button
                 onClick={() => {
-                  onDeleteHandler(item.id);
+                  mutation.mutate(item.id);
                 }}
               >
                 삭제
@@ -55,18 +86,29 @@ const Lists = () => {
             </List>
           );
         })}
+        <br />
+        <button
+          onClick={() => {
+            MoveToTop();
+          }}
+        >
+          스크롤up
+        </button>
       </ListsBox>
     </>
   );
 };
 
 const ListsBox = styled.div`
+  margin-top: 150px;
+
+  margin-left: 230px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 80vw;
-  padding: 20px;
+  padding: 50px 0 50px 0;
   border: 2px solid green;
 `;
 

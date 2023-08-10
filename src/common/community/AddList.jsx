@@ -1,16 +1,30 @@
 import React, { useState } from 'react';
-import { nanoid } from 'nanoid';
-import { useDispatch } from 'react-redux';
-import { addList } from '../../redux/modules/lists';
+// import { nanoid } from 'nanoid';
+// import { useDispatch } from 'react-redux';
+// import { addList } from '../../redux/modules/lists';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { addList } from '../../api/lists';
+//i
+import moment from 'moment';
+
+import { useMutation, QueryClient } from '@tanstack/react-query';
+import Upload from './Upload';
 
 const AddList = () => {
-  //
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
+  //시간
+  const nowTime = moment().format('YYYY-MM-DD HH:mm:ss');
+  console.log('time', nowTime);
+  // 쿼리!!
+  const queryClient = new QueryClient();
+
+  const mutation = useMutation(addList, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['lists']);
+    }
+  });
 
   const [newTitle, setNewTitle] = useState();
   const [newGuardian, setNewGuardian] = useState();
@@ -23,10 +37,11 @@ const AddList = () => {
       title: newTitle,
       guardian: newGuardian,
       companionAnimal: newCompanionAnimal,
-      comments: newComments
+      comments: newComments,
+      time: nowTime
     };
-
-    dispatch(addList(newList));
+    mutation.mutate(newList);
+    // dispatch(addList(newList));
     navigate('/community');
   };
 
@@ -75,6 +90,7 @@ const AddList = () => {
                   }}
                 />
               </span>
+              <Upload />
             </div>
 
             <p>
@@ -100,12 +116,15 @@ const AddList = () => {
 };
 
 const ListsBox = styled.div`
+  margin-top: 150px;
+  margin-left: 230px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 80vw;
-  padding: 20px;
+  padding: 50px 0 50px 0;
+
   border: 2px solid green;
 `;
 

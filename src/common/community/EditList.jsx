@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { editList } from '../../redux/modules/lists';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { editList } from '../../redux/modules/lists';
 import { styled } from 'styled-components';
+import { getLists, updateList } from '../../api/lists';
+
+import { useMutation, QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
+import { editList } from '../../redux/modules/lists';
 
 const EditList = () => {
   const navigate = useNavigate();
@@ -10,10 +14,12 @@ const EditList = () => {
 
   console.log('id', id);
 
-  const dispatch = useDispatch();
-  const lists = useSelector((state) => state.lists);
+  // const dispatch = useDispatch();
+  // const lists = useSelector((state) => state.lists);
 
-  const targetList = lists.find((item) => {
+  const { isLoading, isError, data } = useQuery(['lists'], getLists);
+
+  const targetList = data.find((item) => {
     return item.id === id;
   });
 
@@ -25,17 +31,26 @@ const EditList = () => {
   const [editComments, setEditComments] = useState(targetList.comments);
 
   //
+  // 쿼리!!
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(updateList, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['lists']);
+    }
+  });
 
   const onEditHandler = () => {
     const editedList = {
-      id: targetList.id,
-      img: '',
       title: editTitle,
       guardian: editGuardian,
       companionAnimal: editCompanionAnimal,
       comments: editComments
     };
-    dispatch(editList(editedList));
+
+    mutation.mutate({ targetId: targetList.id, editedList });
+
+    // dispatch(editList(editedList));
   };
 
   return (
@@ -110,12 +125,16 @@ const EditList = () => {
 };
 
 const ListsBox = styled.div`
+  margin-top: 150px;
+
+  margin-left: 230px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 80vw;
-  padding: 20px;
+  padding: 50px 0 50px 0;
+
   border: 2px solid green;
 `;
 
