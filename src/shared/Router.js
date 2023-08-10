@@ -10,7 +10,8 @@ import {
   PetDetail,
   Pets,
   SurveyForm,
-  Signup
+  Signup,
+  Main
 } from '../pages';
 
 import { ContentLayout } from '../common';
@@ -18,7 +19,7 @@ import { ContentLayout } from '../common';
 const Router = () => {
   return (
     <Routes>
-      <Route path="/" element={<Pets />}></Route>
+      <Route path="/" element={<Main />}></Route>
       <Route path="/community" element={<Community />}></Route>
       <Route path="/community/:id" element={<CommunityDetail />}></Route>
       <Route path="/community/edit/:id" element={<CommunityEdit />}></Route>

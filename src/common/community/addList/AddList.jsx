@@ -1,36 +1,44 @@
 import * as S from './AddList.styled';
 import React, { useState } from 'react';
-import { nanoid } from 'nanoid';
-import { useDispatch } from 'react-redux';
-import { addList } from '../../../redux/modules/lists';
-import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../../../firebase';
-import useInput from '../../../hooks/useInput';
-import { Button } from '../../../components';
+import { addList } from '../../../api/lists';
+import moment from 'moment';
+
+import { useMutation, QueryClient } from '@tanstack/react-query';
+import Upload from '../Upload';
 
 const AddList = () => {
-  //
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
+  // 시간
+  const nowTime = moment().format('YYYY-MM-DD HH:mm:ss');
+  console.log('time', nowTime);
+  // 쿼리!!
+  const queryClient = new QueryClient();
+
+  const mutation = useMutation(addList, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['lists']);
+    }
+  });
+
+  // useInput으로 코드 변경하면 좋을거 같아요!
+  const [{ title, guardian, companionAnimal, comments }, onChange, reset] = useInput('');
 
   // const [newTitle, setNewTitle] = useState();
   // const [newGuardian, setNewGuardian] = useState();
   // const [newCompanionAnimal, setNewCompanionAnimal] = useState();
   // const [newComments, setNewComments] = useState();
 
-  const [{ title, guardian, companionAnimal, comments }, onChange, reset] = useInput('');
-
   const onAddHandler = async () => {
     const newList = {
       title,
       guardian,
       companionAnimal,
-      comments
+      comments,
+      time: nowTime
     };
-
-    dispatch(addList(newList));
+    mutation.mutate(newList);
     navigate('/community');
   };
 
@@ -42,42 +50,53 @@ const AddList = () => {
           onAddHandler();
         }}
       >
+        {/* input 태그 useInput 형태로 변경했어요! */}
         <S.TitleWrapper>
           <S.InputTitle placeholder="제목을 입력하세요" name="title" value={title} onChange={onChange} />
         </S.TitleWrapper>
-
         <S.Line />
+
+        {/* 글 작성, 수정은 본인만 가능하다보니 조회 쪽에서 보여주면 좋지 않을까(?) 싶습니다! */}
         {/* <div>
           <span>
-            보호자:
-            <input type="text" name="guardian" value={guardian} onChange={onChange} />
+            보호자:{' '}
+            <input
+              type="text"
+              value={newGuardian}
+              onChange={(e) => {
+                setNewGuardian(e.target.value);
+              }}
+            />
           </span>
 
           <span>
-            반려동물:
-            <input type="text" name="companionAnimal" value={companionAnimal} onChange={onChange} />
+            반려동물:{' '}
+            <input
+              type="text"
+              value={newCompanionAnimal}
+              onChange={(e) => {
+                setNewCompanionAnimal(e.target.value);
+              }}
+            />
           </span>
+          <Upload />
         </div> */}
 
         <S.DescriptionWrapper>
-          <S.UtilImage className="material-symbols-outlined">image</S.UtilImage>
-          <S.InputDescription placeholder="내용을 입력하세요" name="comments" value={comments} onChange={onChange} />
+          comments:
+          <br></br>
+          <input
+            name=""
+            id=""
+            cols="80"
+            rows="20"
+            value={newComments}
+            onChange={(e) => {
+              setNewComments(e.target.value);
+            }}
+          ></input>
         </S.DescriptionWrapper>
-
-        <S.BottomAppBar>
-          <S.AppBarInner>
-            <Button variant="textIcon" color="gray">
-              <span className="material-symbols-outlined">west</span>
-              나가기
-            </Button>
-            <S.ButtonWrapper>
-              <Button>임시저장</Button>
-              <Button variant="solid" color="black">
-                등록하기
-              </Button>
-            </S.ButtonWrapper>
-          </S.AppBarInner>
-        </S.BottomAppBar>
+        <button>등록하기</button>
       </S.contentForm>
     </>
   );

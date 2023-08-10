@@ -9,3 +9,4 @@ export { default as PetDetail } from './petDetail/Petdetail';
 export { default as Pets } from './pets/Pets';
 export { default as Signup } from './signup/Signup';
 export { default as SurveyForm } from './surveyForm/SurveyForm';
+export { default as Main } from './main/Main';
