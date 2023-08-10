@@ -6,13 +6,11 @@ import { styled } from 'styled-components';
 import { getLists, updateList } from '../../api/lists';
 
 import { useMutation, QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
-import { editList } from '../../redux/modules/lists';
+// import Upload from './Upload';
 
 const EditList = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-
-  console.log('id', id);
 
   // const dispatch = useDispatch();
   // const lists = useSelector((state) => state.lists);
@@ -23,7 +21,6 @@ const EditList = () => {
     return item.id === id;
   });
 
-  console.log('targetList', targetList);
   //
   const [editTitle, setEditTitle] = useState(targetList.title);
   const [editGuardian, setEditGuardian] = useState(targetList.guardian);
@@ -64,9 +61,10 @@ const EditList = () => {
               navigate('/community');
             }}
           >
-            <div>
+            <ImgBox>
               <img src="" alt="" />
-            </div>
+              {/* <Upload /> */}
+            </ImgBox>
             <h1>
               이야기나눔:{' '}
               <input
@@ -139,9 +137,19 @@ const ListsBox = styled.div`
 `;
 
 const List = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 700px;
   padding: 10px;
   border: 2px solid green;
 `;
 
+const ImgBox = styled.div`
+  width: 200px;
+  height: 200px;
+  border: 3px solid pink;
+  border-radius: 50%;
+`;
 export default EditList;

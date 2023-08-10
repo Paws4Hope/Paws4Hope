@@ -37,3 +37,6 @@ const updateList = async ({ targetId, editedList }) => {
 };
 
 export { getLists, addList, deleteList, updateList };
+
+//useQuery newQuery차이
+// useQuery 실행순서

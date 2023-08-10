@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
-// import { nanoid } from 'nanoid';
-// import { useDispatch } from 'react-redux';
-// import { addList } from '../../redux/modules/lists';
+
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { addList } from '../../api/lists';
-//i
 import moment from 'moment';
 
 import { useMutation, QueryClient } from '@tanstack/react-query';
-import Upload from './Upload';
+import { useSelector } from 'react-redux';
+// import Upload from './Upload';
 
 const AddList = () => {
   // const dispatch = useDispatch();
   const navigate = useNavigate();
   //시간
   const nowTime = moment().format('YYYY-MM-DD HH:mm:ss');
-  console.log('time', nowTime);
   // 쿼리!!
   const queryClient = new QueryClient();
 
@@ -55,9 +52,12 @@ const AddList = () => {
               onAddHandler();
             }}
           >
-            <div>
+            <ImgBox>
+              <input type="" />
               <img src="" alt="" />
-            </div>
+              {/* <Upload /> */}
+            </ImgBox>
+
             <h1>
               이야기나눔:
               <input
@@ -90,7 +90,6 @@ const AddList = () => {
                   }}
                 />
               </span>
-              <Upload />
             </div>
 
             <p>
@@ -129,9 +128,20 @@ const ListsBox = styled.div`
 `;
 
 const List = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 700px;
   padding: 10px;
   border: 2px solid green;
+`;
+
+const ImgBox = styled.div`
+  width: 200px;
+  height: 200px;
+  border: 3px solid pink;
+  border-radius: 50%;
 `;
 
 export default AddList;
