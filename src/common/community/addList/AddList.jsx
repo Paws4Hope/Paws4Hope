@@ -3,18 +3,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addList } from '../../../api/lists';
 import moment from 'moment';
-
-import { useMutation, QueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Upload from '../Upload';
+import useInput from '../../../hooks/useInput';
+import { Button } from '../../../components';
 
 const AddList = () => {
-  // const dispatch = useDispatch();
   const navigate = useNavigate();
   // 시간
   const nowTime = moment().format('YYYY-MM-DD HH:mm:ss');
-  console.log('time', nowTime);
-  // 쿼리!!
-  const queryClient = new QueryClient();
+
+  const queryClient = useQueryClient();
 
   const mutation = useMutation(addList, {
     onSuccess: () => {
@@ -22,15 +21,17 @@ const AddList = () => {
     }
   });
 
-  // useInput으로 코드 변경하면 좋을거 같아요!
-  const [{ title, guardian, companionAnimal, comments }, onChange, reset] = useInput('');
+  // useInput을 활용하면 좋을거 같아요!
+  const [{ title, guardian, companionAnimal, comments }, onChange] = useInput('');
 
   // const [newTitle, setNewTitle] = useState();
   // const [newGuardian, setNewGuardian] = useState();
   // const [newCompanionAnimal, setNewCompanionAnimal] = useState();
   // const [newComments, setNewComments] = useState();
 
-  const onAddHandler = async () => {
+  const onAddHandler = async (e) => {
+    e.preventDefault();
+
     const newList = {
       title,
       guardian,
@@ -44,12 +45,7 @@ const AddList = () => {
 
   return (
     <>
-      <S.contentForm
-        onSubmit={(e) => {
-          e.preventDefault();
-          onAddHandler();
-        }}
-      >
+      <S.contentForm onSubmit={onAddHandler}>
         {/* input 태그 useInput 형태로 변경했어요! */}
         <S.TitleWrapper>
           <S.InputTitle placeholder="제목을 입력하세요" name="title" value={title} onChange={onChange} />
@@ -83,20 +79,24 @@ const AddList = () => {
         </div> */}
 
         <S.DescriptionWrapper>
-          comments:
-          <br></br>
-          <input
-            name=""
-            id=""
-            cols="80"
-            rows="20"
-            value={newComments}
-            onChange={(e) => {
-              setNewComments(e.target.value);
-            }}
-          ></input>
+          <S.UtilImage className="material-symbols-outlined">image</S.UtilImage>
+          <S.InputDescription placeholder="내용을 입력하세요" name="comments" value={comments} onChange={onChange} />
         </S.DescriptionWrapper>
-        <button>등록하기</button>
+
+        <S.BottomAppBar>
+          <S.AppBarInner>
+            <Button variant="textIcon" color="gray">
+              <span className="material-symbols-outlined">west</span>
+              나가기
+            </Button>
+            <S.ButtonWrapper>
+              <Button>임시저장</Button>
+              <Button variant="solid" color="black">
+                등록하기
+              </Button>
+            </S.ButtonWrapper>
+          </S.AppBarInner>
+        </S.BottomAppBar>
       </S.contentForm>
     </>
   );

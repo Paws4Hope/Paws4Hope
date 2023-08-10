@@ -1,8 +1,7 @@
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getLists, useDelete } from '../../api/lists';
-import { deleteList } from '../../api/lists';
+import { deleteList, getLists, useDelete } from '../../../api/lists';
 import { useMutation, QueryClient } from '@tanstack/react-query';
 
 const Lists = () => {

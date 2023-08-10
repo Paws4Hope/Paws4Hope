@@ -1,65 +1,71 @@
 import * as S from './EditList.styled';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getLists, updateList } from '../../../api/lists';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import useInput from '../../../hooks/useInput';
+import { useSelector, useDispatch } from 'react-redux';
+import { editList } from '../../../redux/modules/lists';
 import { Button } from '../../../components';
 
 const EditList = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { isLoading, isError, data } = useQuery(['lists'], getLists);
+  console.log('id', id);
 
-  const targetList = data.find((item) => {
+  const dispatch = useDispatch();
+  const lists = useSelector((state) => state.lists);
+
+  const targetList = lists.find((item) => {
     return item.id === id;
   });
+
+  console.log('targetList', targetList);
 
   const initialState = {
     ...targetList
   };
 
-  const [{ title, guardian, companionAnimal, comments }, onChange] = useInput(initialState);
+  const [{ title, guardian, companionAnimal, comments }, onChange, reset] = useInput(initialState);
 
-  //
   // const [editTitle, setEditTitle] = useState(targetList.title);
   // const [editGuardian, setEditGuardian] = useState(targetList.guardian);
   // const [editCompanionAnimal, setEditCompanionAnimal] = useState(targetList.companionAnimal);
   // const [editComments, setEditComments] = useState(targetList.comments);
 
   //
-  // 쿼리!!
-  const queryClient = useQueryClient();
 
-  const mutation = useMutation(updateList, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['lists']);
-    }
-  });
-
-  const onEditHandler = (e) => {
-    e.preventDefault();
-
+  const onEditHandler = () => {
     const editedList = {
+      id: targetList.id,
+      img: '',
       title,
       guardian,
       companionAnimal,
       comments
     };
-
-    mutation.mutate({ targetId: targetList.id, editedList });
-    navigate('/community');
+    dispatch(editList(editedList));
   };
 
   return (
     <>
-      <S.contentForm onSubmit={onEditHandler}>
+      <S.contentForm
+        onSubmit={(e) => {
+          e.preventDefault();
+          onEditHandler();
+          navigate('/community');
+        }}
+      >
         <S.TitleWrapper>
-          <S.InputTitle type="text" name="title" value={title} onChange={onChange} />
+          <S.InputTitle
+            type="text"
+            value={editTitle}
+            onChange={(e) => {
+              setEditTitle(e.target.value);
+            }}
+          />
         </S.TitleWrapper>
 
         <S.Line />
+
         {/* <div>
           <span>
             보호자:{' '}
@@ -86,9 +92,14 @@ const EditList = () => {
 
         <S.DescriptionWrapper>
           <S.UtilImage className="material-symbols-outlined">image</S.UtilImage>
-          <S.InputDescription type="textarea" name="title" value={comments} onChange={onChange} />
-        </S.DescriptionWrapper>
 
+          <S.InputDescription
+            value={editComments}
+            onChange={(e) => {
+              setEditComments(e.target.value);
+            }}
+          ></S.InputDescription>
+        </S.DescriptionWrapper>
         <S.BottomAppBar>
           <S.AppBarInner>
             <Button variant="textIcon" color="gray">
@@ -104,5 +115,4 @@ const EditList = () => {
     </>
   );
 };
-
 export default EditList;
