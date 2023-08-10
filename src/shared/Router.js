@@ -12,11 +12,11 @@ import {
   SurveyForm
 } from '../pages';
 import Signup from '../pages/signup/Signup';
+import Petdetailcopy from '../pages/petDetail/Petdetail copy';
 
 const Router = () => {
   return (
     <Routes>
-      <Route path="/pets" element={<Pets />}></Route>
       <Route path="/community" element={<Community />}></Route>
       <Route path="/community/:id" element={<CommunityDetail />}></Route>
       <Route path="/community/edit" element={<CommunityEdit />}></Route>
@@ -25,6 +25,7 @@ const Router = () => {
       <Route path="/mypage/edit" element={<EditMyapge />}></Route>
       <Route path="/pets" element={<Pets />}></Route>
       <Route path="/pets/:id" element={<PetDetail />}></Route>
+      <Route path="/petsdetailcopy" element={<Petdetailcopy />}></Route>
       <Route path="/surveyform" element={<SurveyForm />}></Route>
 
       <Route path="/login" element={<Login />}></Route>

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { AnimalKindApi, AnimalApi, SidoApi, SigunguApi } from '../../api/api';
+import { AnimalKindApi, AnimalApi } from '../../api/api';
 
 function Pets() {
   const { data, status } = useQuery(['animalData'], AnimalApi);
@@ -32,6 +32,9 @@ function Pets() {
             </p>
             <p>
               <strong>Happen Place:</strong> {animal.happenPlace}
+            </p>
+            <p>
+              <strong>special Mark</strong> {animal.specialMark}
             </p>
             {/* Add more information as needed */}
           </div>

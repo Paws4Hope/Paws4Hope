@@ -39,14 +39,13 @@ export async function SidoApi() {
     DATA_API_KEY;
 
   const response = await axios.get(url + queryParams);
-  console.log(response);
   return response.data;
 }
 
 /** 2) [시/군/구] - 오픈API 유기동물 데이터 조회  */
 export async function SigunguApi() {
   const url = `${BASE_URL}/sigungu`;
-  const queryParams = '?' + encodeURIComponent('upr_cd') + '=' + encodeURIComponent(6110000) + DATA_API_KEY;
+  const queryParams = '?' + encodeURIComponent('upr_cd') + '=' + encodeURIComponent(6260000) + DATA_API_KEY;
 
   const response = await axios.get(url + queryParams);
   return response.data;
@@ -80,17 +79,29 @@ export async function AnimalKindApi() {
 }
 
 /** 5) [유기동물] - 오픈API 유기동물 데이터 조회  */
-export async function AnimalApi() {
+export async function AnimalApi(sidoState) {
   const url = `${BASE_URL}/abandonmentPublic`;
   const queryParams =
     '?' +
     encodeURIComponent('bgnde') +
     '=' +
-    encodeURIComponent(20230801) +
+    encodeURIComponent(20220401) +
     '&' +
     encodeURIComponent('endde') +
     '=' +
     encodeURIComponent(20230808) +
+    '&' +
+    encodeURIComponent('upr_cd') +
+    '=' +
+    encodeURIComponent(sidoState) +
+    '&' +
+    encodeURIComponent('numOfRows') +
+    '=' +
+    encodeURIComponent(17) +
+    '&' +
+    encodeURIComponent('pageNo') +
+    '=' +
+    encodeURIComponent(1) +
     DATA_API_KEY;
 
   const response = await axios.get(url + queryParams);
