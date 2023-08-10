@@ -10,8 +10,6 @@ const Lists = () => {
   //쿼리!!!!!
   const { isLoading, isError, data } = useQuery(['lists'], getLists);
 
-  console.log('data', data);
-
   /*
   if (status === 'loading') {
     return <p>Loading...</p>;
@@ -22,8 +20,6 @@ const Lists = () => {
   }
   */
 
-  // 쿼리!!
-  // 전역역
   const queryClient = useQueryClient();
 
   const mutation = useMutation(deleteList, {
@@ -34,10 +30,8 @@ const Lists = () => {
 
   const orderedData = data?.sort((a, b) => new Date(b.time) - new Date(a.time));
 
-  console.log('ordered', orderedData);
   //scroll
   const MoveToTop = () => {
-    // top:0 >> 맨위로  behavior:smooth >> 부드럽게 이동할수 있게 설정하는 속성
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -55,9 +49,9 @@ const Lists = () => {
         {orderedData?.map((item) => {
           return (
             <List key={item.id}>
-              <div>
+              <ImgBox>
                 <img src="" alt="" />
-              </div>
+              </ImgBox>
               <h1>{item.title}</h1>
               <div>
                 <span>보호자: {item.guardian}</span>
@@ -68,20 +62,22 @@ const Lists = () => {
               <p>{item.comments}</p>
               <span>{item.time}</span>
               <br />
-              <button
-                onClick={() => {
-                  mutation.mutate(item.id);
-                }}
-              >
-                삭제
-              </button>
-              <button
-                onClick={() => {
-                  navigate(`/community/edit/${item.id}`);
-                }}
-              >
-                수정
-              </button>
+              <div>
+                <button
+                  onClick={() => {
+                    mutation.mutate(item.id);
+                  }}
+                >
+                  삭제
+                </button>
+                <button
+                  onClick={() => {
+                    navigate(`/community/edit/${item.id}`);
+                  }}
+                >
+                  수정
+                </button>
+              </div>
             </List>
           );
         })}
@@ -112,9 +108,21 @@ const ListsBox = styled.div`
 `;
 
 const List = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 700px;
   padding: 10px;
   border: 2px solid green;
+  margin-bottom: 10px;
+`;
+
+const ImgBox = styled.div`
+  width: 200px;
+  height: 200px;
+  border: 3px solid pink;
+  border-radius: 50%;
 `;
 
 export default Lists;
