@@ -1,9 +1,9 @@
 import * as S from './AddList.styled';
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addList } from '../../../api/lists';
 import moment from 'moment';
-import { useMutation, QueryClient, useQueryClient } from '@tanstack/react-query';
+import { useMutation, QueryClient } from '@tanstack/react-query';
 import Upload from '../Upload';
 import useInput from '../../../hooks/useInput';
 import { Button } from '../../../components';
@@ -21,8 +21,16 @@ const AddList = () => {
     }
   });
 
+  const initialState = {
+    title: '',
+    guardian: '',
+    companionAnimal: '',
+    comments: '',
+    time: ''
+  };
+
   // useInput을 활용하면 좋을거 같아요!
-  const [{ title, guardian, companionAnimal, comments }, onChange] = useInput('');
+  const [{ title, guardian, companionAnimal, comments }, onChange] = useInput(initialState);
 
   // const [newTitle, setNewTitle] = useState();
   // const [newGuardian, setNewGuardian] = useState();

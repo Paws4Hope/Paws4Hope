@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import { useSelector } from 'react-redux';
 /*
  * 오픈API (유기동물 조회)
  * URL : http://apis.data.go.kr
@@ -90,6 +90,10 @@ export async function AnimalApi() {
     encodeURIComponent('endde') +
     '=' +
     encodeURIComponent(20230808) +
+    '&' +
+    encodeURIComponent('upr_cd') +
+    '=' +
+    encodeURIComponent(loaction) +
     DATA_API_KEY;
 
   const response = await axios.get(url + queryParams);

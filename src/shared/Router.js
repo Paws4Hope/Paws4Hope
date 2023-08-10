@@ -14,8 +14,6 @@ import {
   Main
 } from '../pages';
 
-import { ContentLayout } from '../common';
-
 const Router = () => {
   return (
     <Routes>
