@@ -86,7 +86,7 @@ const EditList = () => {
 
         <S.DescriptionWrapper>
           <S.UtilImage className="material-symbols-outlined">image</S.UtilImage>
-          <S.InputDescription type="textarea" name="title" value={comments} onChange={onChange} />
+          <S.InputDescription type="textarea" name="comments" value={comments} onChange={onChange} />
         </S.DescriptionWrapper>
 
         <S.BottomAppBar>
