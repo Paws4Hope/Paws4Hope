@@ -13,6 +13,7 @@ import {
   Main
 } from '../pages';
 import Signup from '../pages/signup/Signup';
+import SurveyDone from '../pages/surveyForm/SurveyDone';
 
 const Router = () => {
   return (
@@ -27,6 +28,7 @@ const Router = () => {
       <Route path="/pets" element={<Pets />}></Route>
       <Route path="/pets/:id" element={<PetDetail />}></Route>
       <Route path="/surveyform" element={<SurveyForm />}></Route>
+      <Route path="/surveyDone" element={<SurveyDone />}></Route>
 
       <Route path="/login" element={<Login />}></Route>
       <Route path="/signup" element={<Signup />}></Route>
