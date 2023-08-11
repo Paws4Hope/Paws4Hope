@@ -5,7 +5,6 @@ export { default as CommunityPost } from './communityPost/CommunityPost';
 export { default as EditMyapge } from './editMypage/EditMypage';
 export { default as Login } from './login/Login';
 export { default as Mypage } from './mypage/Mypage';
-export { default as PetDetail } from './petDetail/Petdetail';
-export { default as Pets } from './pets/Pets';
+export { default as Petdetailcopy } from './petDetail/Petdetail copy';
 export { default as Singup } from './signup/Signup';
 export { default as SurveyForm } from './surveyForm/SurveyForm';

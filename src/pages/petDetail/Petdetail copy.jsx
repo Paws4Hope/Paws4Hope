@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { AnimalApi, SidoApi, SigunguApi } from '../../api/api';
+import { AnimalApi, SidoApi } from '../../api/api';
 import Modal from 'react-modal';
 import '../petDetail/copy.styled.css';
+import InterestButton from './InterestButton';
 
 Modal.setAppElement('#root'); // 모달을 사용할 루트 엘리먼트 설정
 
 function Petdetailcopy() {
-  const { data: sido } = useQuery(['sidoData'], SidoApi);
-
-  const sidoData = sido?.response?.body?.items?.item || [];
-  console.log(sidoData);
-
-  const [sidoState, setSidoState] = useState('6260000');
-  const { data, status } = useQuery(['animalData', sidoState], () => AnimalApi(sidoState));
-
+  const [user, setUser] = useState(null); // 사용자 정보 상태
+  const [interests, setInterests] = useState([]); // 관심 동물 리스트 //interests 고유번호 저장됨
   const [selectedAnimal, setSelectedAnimal] = useState('');
   const [selectedAnimalDetail, setSelectedAnimalDetail] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [sidoState, setSidoState] = useState('6260000');
 
+  useEffect(() => {
+    setUser('asdasd');
+  });
+
+  const { data, status } = useQuery(['animalData', sidoState], () => AnimalApi(sidoState));
+  const { data: sido } = useQuery(['sidoData'], SidoApi);
+
+  const sidoData = sido?.response?.body?.items?.item || [];
   // ... (status 체크, 로딩 및 에러 처리 등)
 
   const animalItems = data?.response?.body?.items?.item || [];
@@ -34,6 +38,27 @@ function Petdetailcopy() {
   const closeModal = () => {
     setSelectedAnimalDetail(null);
     setModalIsOpen(false);
+  };
+
+  // 관심 버튼을 토글하는 함수
+  const toggleInterest = (animalId) => {
+    if (!user) {
+      // 로그인하지 않았을 경우 처리
+      return;
+    }
+
+    if (isInterested(animalId)) {
+      // 이미 관심 동물인 경우 제거
+      setInterests(interests.filter((id) => id !== animalId));
+    } else {
+      // 관심 동물 리스트에 추가
+      setInterests([...interests, animalId]);
+    }
+  };
+
+  // 동물이 관심 동물인지 확인하는 함수
+  const isInterested = (animalId) => {
+    return interests.includes(animalId);
   };
 
   return (
@@ -68,6 +93,7 @@ function Petdetailcopy() {
         {filteredAnimals.map((animal) => (
           <div key={animal.desertionNo} className="animal-card">
             {/* 이미지 클릭 시 모달 열기 */}
+            {/* 유기번호를 동물 고유아이디로 넘기기 */}
             <img
               className="animal-image"
               src={animal.popfile}
@@ -83,6 +109,15 @@ function Petdetailcopy() {
                 className="modal"
                 overlayClassName="modal-overlay"
               >
+                {/* 관심등록 버튼 */}
+                {/* 로그인되었을 때만 보이도록 설정 */}
+                {user && (
+                  <InterestButton
+                    animalId={animal.desertionNo}
+                    isInterested={isInterested(animal.desertionNo)}
+                    toggleInterest={toggleInterest}
+                  />
+                )}
                 <div className="animal-detail-popup">
                   <h2>상세 정보</h2>
                   {/* 상세 정보 표시 */}
@@ -98,6 +133,7 @@ function Petdetailcopy() {
                   <p>상태: {selectedAnimalDetail.processState}</p>
                   <p>발견장소: {selectedAnimalDetail.happenPlace}</p>
                   <p>특징: {selectedAnimalDetail.specialMark}</p>
+                  <p>유기번호: {selectedAnimalDetail.desertionNo}</p>
                   <img
                     className="animal-image-modal"
                     src={selectedAnimalDetail.popfile}

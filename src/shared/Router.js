@@ -23,8 +23,6 @@ const Router = () => {
       <Route path="/community/post" element={<CommunityPost />}></Route>
       <Route path="/mypage" element={<Mypage />}></Route>
       <Route path="/mypage/edit" element={<EditMyapge />}></Route>
-      <Route path="/pets" element={<Pets />}></Route>
-      <Route path="/pets/:id" element={<PetDetail />}></Route>
       <Route path="/petsdetailcopy" element={<Petdetailcopy />}></Route>
       <Route path="/surveyform" element={<SurveyForm />}></Route>
 
