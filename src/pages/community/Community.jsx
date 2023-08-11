@@ -2,11 +2,7 @@ import React from 'react';
 import { Lists } from '../../common';
 
 const Community = () => {
-  return (
-    <>
-      <Lists />
-    </>
-  );
+  return <div></div>;
 };
 
 export default Community;

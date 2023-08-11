@@ -2,11 +2,7 @@ import React from 'react';
 import { AddList } from '../../common';
 
 const CommunityPost = () => {
-  return (
-    <>
-      <AddList />
-    </>
-  );
+  return <div></div>;
 };
 
 export default CommunityPost;

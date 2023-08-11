@@ -17,8 +17,11 @@ const GlobalStyle = createGlobalStyle`
             --color-gray-700 : #727272;
             --color-gray-900 : #868E96;
 
-
             --color-primary : #FFC056;
+
+            --color-line-gray : #999;
+            --color-line-gray-100 : #e7e7e9;
+            --color-line-gray-200 : #F3F3F4;
             
             /* global layout */
             --global-inner : 1100px; 
@@ -28,6 +31,16 @@ const GlobalStyle = createGlobalStyle`
     /* reset CSS */
     html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; }
     button{border:none; box-shadow:none; border-radius:0; padding:0; overflow:visible; cursor:pointer; background-color: transparent;} 
+
+    * {
+        box-sizing : border-box;
+    }
+
+    button, a{
+        cursor: pointer;
+        &:hover { cursor: pointer; }
+    }
+
 `;
 
 export default GlobalStyle;
