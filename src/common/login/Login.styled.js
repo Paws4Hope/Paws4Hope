@@ -11,6 +11,7 @@ export const Layout = styled.div`
 `;
 
 export const LeftWrapper = styled.div`
+  position: relative;
   width: 100%;
   height: inherit;
   background-color: var(--color-white);
@@ -127,4 +128,11 @@ export const ButtonText = styled.button`
     opacity: 0.6;
     transition: 0.2s ease;
   }
+`;
+
+export const Image = styled.img`
+  position: absolute;
+  bottom: 0;
+  transform: translateX(-50%);
+  left: 50%;
 `;
