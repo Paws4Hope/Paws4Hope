@@ -1,5 +1,5 @@
 import React from 'react';
-import MyPage from '../../common/mypage/MyPage';
+import MyPage from '../../common/mypage/Mypage';
 
 const Mypage = () => {
   return (
