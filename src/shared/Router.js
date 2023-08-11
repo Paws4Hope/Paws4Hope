@@ -19,7 +19,7 @@ const Router = () => {
       <Route path="/" element={<Pets />}></Route>
       <Route path="/community" element={<Community />}></Route>
       <Route path="/community/:id" element={<CommunityDetail />}></Route>
-      <Route path="/community/edit" element={<CommunityEdit />}></Route>
+      <Route path="/community/edit/:id" element={<CommunityEdit />}></Route>
       <Route path="/community/post" element={<CommunityPost />}></Route>
       <Route path="/mypage" element={<Mypage />}></Route>
       <Route path="/mypage/edit" element={<EditMyapge />}></Route>

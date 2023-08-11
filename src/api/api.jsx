@@ -38,6 +38,7 @@ export async function SidoApi() {
     DATA_API_KEY;
 
   const response = await axios.get(url + queryParams);
+
   return response.data;
 }
 
