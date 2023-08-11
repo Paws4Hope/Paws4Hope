@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 
 export const PageTitle = styled.span`
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--color-black);
   margin-bottom: 8px;
 `;
@@ -128,6 +128,7 @@ export const CommentInner = styled.div`
 
 export const CommentForm = styled.form`
   margin-bottom: 60px;
+  margin-top: 24px;
   position: relative;
 
   & button {

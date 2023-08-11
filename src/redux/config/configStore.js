@@ -1,9 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit';
-import animalSlice from '../modules/animalSlice';
+import lists from '../modules/lists';
+import modal from '../modules/modal';
+import surveys from '../modules/surveys';
+import dialog from '../modules/dialog';
+import submitSurvey from '../modules/submitSurvey';
 
 const store = configureStore({
   reducer: {
-    sido: animalSlice
+    lists,
+    modal,
+    surveys,
+    dialog,
+    submitSurvey
   }
 });
 
