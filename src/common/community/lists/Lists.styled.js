@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 export const Layout = styled.div`
   width: 100%;
@@ -16,12 +18,21 @@ export const CardList = styled.div`
   }
 `;
 
-export const Card = styled.div`
+export const Card = styled.a`
   display: grid;
   grid-template-columns: 75% 25%;
   align-items: center;
   padding: 36px 0;
   border-bottom: 1px solid var(--color-gray-200);
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    & img {
+      transform: scale(1.1);
+      transition: 0.5s ease;
+    }
+  }
 `;
 
 export const Content = styled.div`
@@ -112,8 +123,25 @@ export const ThumbNail = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: 0.5s ease;
 `;
 
 export const ButtonText = styled.button`
   text-decoration: underline;
+`;
+
+export const SwiperLayout = styled(Swiper)`
+  height: 200px;
+  border-radius: 20px;
+  background-color: #2f68ec;
+  padding: 44px 38px;
+  margin-top: 150px;
+  box-sizing: border-box;
+`;
+
+export const ListItem = styled(SwiperSlide)`
+  width: 100%;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--color-white);
 `;

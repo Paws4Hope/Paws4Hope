@@ -1,8 +1,5 @@
-// import axios from 'axios';
 import { collection, getDocs, addDoc, doc, deleteDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import { editList } from '../redux/modules/lists';
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 
 // 모든 todos를 가져오는 api
 const getLists = async () => {
@@ -25,11 +22,8 @@ const deleteList = async (targetId) => {
   await deleteDoc(doc(db, 'posts', targetId));
 };
 
-const updateList = async ({ targetId, editedList }) => {
-  await updateDoc(doc(db, 'posts', targetId), editedList);
+const updateList = async ({ targetId, editedPost }) => {
+  await updateDoc(doc(db, 'posts', targetId), editedPost);
 };
 
 export { getLists, addList, deleteList, updateList };
-
-//useQuery newQuery차이
-// useQuery 실행순서

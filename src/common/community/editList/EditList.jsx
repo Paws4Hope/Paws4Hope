@@ -17,7 +17,8 @@ const EditList = () => {
   });
 
   const initialState = {
-    ...targetPost
+    title: targetPost.title,
+    content: targetPost.content
   };
 
   const [{ title, content }, onChange] = useInput(initialState);
@@ -35,6 +36,7 @@ const EditList = () => {
     e.preventDefault();
 
     const editedPost = {
+      ...targetPost,
       title,
       content
     };

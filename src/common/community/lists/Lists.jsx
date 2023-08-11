@@ -4,6 +4,13 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteList, getLists, useDelete } from '../../../api/lists';
 import { useMutation, QueryClient } from '@tanstack/react-query';
 import Button from '../../../components/button/Button';
+import SwiperCore, { EffectCoverflow, Pagination, Autoplay } from 'swiper';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 
 const Lists = () => {
   const navigate = useNavigate();
@@ -37,7 +44,16 @@ const Lists = () => {
   return (
     <>
       <S.Layout>
-        <div>슬라이드 배너</div>
+        <S.SwiperLayout
+          spaceBetween={38}
+          slidesPerView={1}
+          onSlideChange={() => console.log('slide change')}
+          onSwiper={(swiper) => console.log(swiper)}
+        >
+          <S.ListItem>Slide 1</S.ListItem>
+          <S.ListItem>Slide 2</S.ListItem>
+          <S.ListItem>Slide 3</S.ListItem>
+        </S.SwiperLayout>
 
         <S.CardInner>
           <S.PageTitle>커뮤니티</S.PageTitle>
@@ -45,7 +61,12 @@ const Lists = () => {
             {orderedData?.map((item) => {
               return (
                 <>
-                  <S.Card key={item.id}>
+                  <S.Card
+                    key={item.id}
+                    onClick={() => {
+                      navigate(`/community/${item.id}`);
+                    }}
+                  >
                     <S.Content>
                       <S.Title>{item.title}</S.Title>
                       <S.Description>{item.content}</S.Description>

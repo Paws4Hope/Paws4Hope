@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { addList } from '../../../api/lists';
 import moment from 'moment';
 import { useMutation, QueryClient } from '@tanstack/react-query';
-import Upload from '../Upload';
 import useInput from '../../../hooks/useInput';
 import { Button } from '../../../components';
 import ImageUpload from '../ImageUpload';
@@ -58,6 +57,8 @@ const AddList = () => {
     const newPost = {
       id: nanoid(),
       uid: '',
+      author: '',
+      avatar: '',
       title,
       content,
       like: 0,
@@ -66,7 +67,7 @@ const AddList = () => {
       comments: [],
       time: nowTime
     };
-    mutation.mutate({ newPost: newPost, id: newPost.id });
+    mutation.mutate({ newPost, id: newPost.id });
     navigate('/community');
   };
 
