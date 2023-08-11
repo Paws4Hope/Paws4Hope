@@ -10,8 +10,13 @@ const GlobalStyle = createGlobalStyle`
             --color-gray : #999;
             --color-gray-100 : #dcdcdc;
             --color-gray-200 : #efefef;
+            --color-gray-300 : #B5B5B5;
+            --color-gray-400 : #F4F4F4;
+            --color-gray-500 : #D9D9D9;
             --color-gray-600 : #666;
+            --color-gray-700 : #727272;
             --color-gray-900 : #868E96;
+
 
             --color-primary : #FFC056;
             

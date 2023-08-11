@@ -1,5 +1,5 @@
 import * as S from './AddList.styled';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addList } from '../../../api/lists';
 import moment from 'moment';
@@ -7,6 +7,10 @@ import { useMutation, QueryClient } from '@tanstack/react-query';
 import Upload from '../Upload';
 import useInput from '../../../hooks/useInput';
 import { Button } from '../../../components';
+import ImageUpload from '../ImageUpload';
+import { nanoid } from 'nanoid';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { storage } from '../../../firebase';
 
 const AddList = () => {
   const navigate = useNavigate();
@@ -17,78 +21,78 @@ const AddList = () => {
 
   const mutation = useMutation(addList, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['lists']);
+      queryClient.invalidateQueries(['posts']);
     }
   });
 
+  // 기본 데이터 설정
   const initialState = {
     title: '',
-    guardian: '',
-    companionAnimal: '',
-    comments: '',
-    time: ''
+    content: ''
   };
 
-  // useInput을 활용하면 좋을거 같아요!
-  const [{ title, guardian, companionAnimal, comments }, onChange] = useInput(initialState);
+  // useInput으로 변경
+  const [{ title, content }, onChange] = useInput(initialState);
 
-  // const [newTitle, setNewTitle] = useState();
-  // const [newGuardian, setNewGuardian] = useState();
-  // const [newCompanionAnimal, setNewCompanionAnimal] = useState();
-  // const [newComments, setNewComments] = useState();
+  const [preview, setPreview] = useState(null);
+  const [thumbNail, setThumbNail] = useState('');
+
+  // 1. 업로드할 이미지 파일 선택 [ㅇ]
+  const handleUpload = (e) => {
+    handleFileSelect(e.target.files[0]);
+    let prevImage = URL.createObjectURL(e.target.files[0]);
+    setPreview(prevImage);
+  };
+
+  // 2. 파이어베이스 storage 저장 [ㅇ]
+  const handleFileSelect = async (file) => {
+    const imageRef = ref(storage, `images/${nanoid() + ImageUpload.name}`);
+    await uploadBytes(imageRef, file);
+    const downloadURL = await getDownloadURL(imageRef);
+    setThumbNail(downloadURL);
+  };
 
   const onAddHandler = async (e) => {
     e.preventDefault();
 
-    const newList = {
+    const newPost = {
+      id: nanoid(),
+      uid: '',
       title,
-      guardian,
-      companionAnimal,
-      comments,
+      content,
+      like: 0,
+      images: [],
+      thumbNail,
+      comments: [],
       time: nowTime
     };
-    mutation.mutate(newList);
+    mutation.mutate({ newPost: newPost, id: newPost.id });
     navigate('/community');
   };
 
   return (
     <>
+      {thumbNail}
       <S.contentForm onSubmit={onAddHandler}>
-        {/* input 태그 useInput 형태로 변경했어요! */}
         <S.TitleWrapper>
           <S.InputTitle placeholder="제목을 입력하세요" name="title" value={title} onChange={onChange} />
+          <div>
+            <label htmlFor="imageFile">썸네일 추가</label>
+            <img src={preview} />
+            <input
+              id="imageFile"
+              type="file"
+              accept="image/jpg, image/jpeg, image/png"
+              onChange={handleUpload}
+              style={{ display: 'none' }}
+            />
+          </div>
         </S.TitleWrapper>
         <S.Line />
 
-        {/* 글 작성, 수정은 본인만 가능하다보니 조회 쪽에서 보여주면 좋지 않을까(?) 싶습니다! */}
-        {/* <div>
-          <span>
-            보호자:{' '}
-            <input
-              type="text"
-              value={newGuardian}
-              onChange={(e) => {
-                setNewGuardian(e.target.value);
-              }}
-            />
-          </span>
-
-          <span>
-            반려동물:{' '}
-            <input
-              type="text"
-              value={newCompanionAnimal}
-              onChange={(e) => {
-                setNewCompanionAnimal(e.target.value);
-              }}
-            />
-          </span>
-          <Upload />
-        </div> */}
-
         <S.DescriptionWrapper>
           <S.UtilImage className="material-symbols-outlined">image</S.UtilImage>
-          <S.InputDescription placeholder="내용을 입력하세요" name="comments" value={comments} onChange={onChange} />
+          <S.InputDescription placeholder="내용을 입력하세요" name="content" value={content} onChange={onChange} />
         </S.DescriptionWrapper>
 
         <S.BottomAppBar>

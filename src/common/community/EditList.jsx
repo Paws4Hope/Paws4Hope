@@ -12,9 +12,6 @@ const EditList = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // const dispatch = useDispatch();
-  // const lists = useSelector((state) => state.lists);
-
   const { isLoading, isError, data } = useQuery(['lists'], getLists);
 
   const targetList = data.find((item) => {

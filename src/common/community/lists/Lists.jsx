@@ -1,30 +1,21 @@
-import { styled } from 'styled-components';
+import * as S from './Lists.styled';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteList, getLists, useDelete } from '../../../api/lists';
 import { useMutation, QueryClient } from '@tanstack/react-query';
+import Button from '../../../components/button/Button';
 
 const Lists = () => {
   const navigate = useNavigate();
 
   //쿼리!!!!!
-  const { isLoading, isError, data } = useQuery(['lists'], getLists);
-
-  /*
-  if (status === 'loading') {
-    return <p>Loading...</p>;
-  }
-
-  if (status === 'error') {
-    return <p>Error fetching data</p>;
-  }
-  */
+  const { data, status } = useQuery(['posts'], getLists);
 
   const queryClient = useQueryClient();
 
   const mutation = useMutation(deleteList, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['lists']);
+      queryClient.invalidateQueries(['posts']);
     }
   });
 
@@ -35,23 +26,80 @@ const Lists = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  if (status === 'loading') {
+    return <p>Loading...</p>;
+  }
+
+  if (status === 'error') {
+    return <p>Error fetching data</p>;
+  }
+
   return (
     <>
-      <ListsBox>
-        <button
-          onClick={() => {
-            navigate('/community/post');
-          }}
-        >
-          추가
-        </button>
-        <br />
-        {orderedData?.map((item) => {
+      <S.Layout>
+        <div>슬라이드 배너</div>
+
+        <S.CardInner>
+          <S.PageTitle>커뮤니티</S.PageTitle>
+          <S.CardList>
+            {orderedData?.map((item) => {
+              return (
+                <>
+                  <S.Card key={item.id}>
+                    <S.Content>
+                      <S.Title>{item.title}</S.Title>
+                      <S.Description>{item.content}</S.Description>
+                      <S.CardInfo>
+                        <S.IconWrapper>
+                          <S.Item>작성자</S.Item>
+                          <S.Item>좋아요</S.Item>
+                          <S.Item>댓글</S.Item>
+                          <S.Item>{item.time}</S.Item>
+                        </S.IconWrapper>
+                        <S.ButtonWrapper>
+                          <S.ButtonText
+                            onClick={() => {
+                              mutation.mutate(item.id);
+                            }}
+                          >
+                            삭제
+                          </S.ButtonText>
+                          <S.ButtonText
+                            onClick={() => {
+                              navigate(`/community/edit/${item.id}`);
+                            }}
+                          >
+                            수정
+                          </S.ButtonText>
+                        </S.ButtonWrapper>
+                      </S.CardInfo>
+                    </S.Content>
+                    <S.Figure>
+                      <S.ThumbNail src={item.thumbNail} alt="" />
+                    </S.Figure>
+                  </S.Card>
+                </>
+              );
+            })}
+          </S.CardList>
+        </S.CardInner>
+
+        <div>
+          <Button
+            variant="solid"
+            color="black"
+            onClick={() => {
+              navigate('/community/post');
+            }}
+          >
+            추가
+          </Button>
+          {/* {orderedData?.map((item) => {
           return (
-            <List key={item.id}>
-              <ImgBox>
+            <div key={item.id}>
+              <div>
                 <img src="" alt="" />
-              </ImgBox>
+              </div>
               <h1>{item.title}</h1>
               <div>
                 <span>보호자: {item.guardian}</span>
@@ -78,51 +126,20 @@ const Lists = () => {
                   수정
                 </button>
               </div>
-            </List>
+            </div>
           );
-        })}
-        <br />
-        <button
-          onClick={() => {
-            MoveToTop();
-          }}
-        >
-          스크롤up
-        </button>
-      </ListsBox>
+        })} */}
+          <button
+            onClick={() => {
+              MoveToTop();
+            }}
+          >
+            스크롤up
+          </button>
+        </div>
+      </S.Layout>
     </>
   );
 };
-
-const ListsBox = styled.div`
-  margin-top: 150px;
-
-  margin-left: 230px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 80vw;
-  padding: 50px 0 50px 0;
-  border: 2px solid green;
-`;
-
-const List = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 700px;
-  padding: 10px;
-  border: 2px solid green;
-  margin-bottom: 10px;
-`;
-
-const ImgBox = styled.div`
-  width: 200px;
-  height: 200px;
-  border: 3px solid pink;
-  border-radius: 50%;
-`;
 
 export default Lists;

@@ -10,45 +10,36 @@ const EditList = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { isLoading, isError, data } = useQuery(['lists'], getLists);
+  const { isLoading, isError, data } = useQuery(['posts'], getLists);
 
-  const targetList = data.find((item) => {
+  const targetPost = data.find((item) => {
     return item.id === id;
   });
 
   const initialState = {
-    ...targetList
+    ...targetPost
   };
 
-  const [{ title, guardian, companionAnimal, comments }, onChange] = useInput(initialState);
+  const [{ title, content }, onChange] = useInput(initialState);
 
-  //
-  // const [editTitle, setEditTitle] = useState(targetList.title);
-  // const [editGuardian, setEditGuardian] = useState(targetList.guardian);
-  // const [editCompanionAnimal, setEditCompanionAnimal] = useState(targetList.companionAnimal);
-  // const [editComments, setEditComments] = useState(targetList.comments);
-
-  //
   // 쿼리!!
   const queryClient = useQueryClient();
 
   const mutation = useMutation(updateList, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['lists']);
+      queryClient.invalidateQueries(['posts']);
     }
   });
 
   const onEditHandler = (e) => {
     e.preventDefault();
 
-    const editedList = {
+    const editedPost = {
       title,
-      guardian,
-      companionAnimal,
-      comments
+      content
     };
 
-    mutation.mutate({ targetId: targetList.id, editedList });
+    mutation.mutate({ targetId: targetPost.id, editedPost });
     navigate('/community');
   };
 
@@ -60,33 +51,10 @@ const EditList = () => {
         </S.TitleWrapper>
 
         <S.Line />
-        {/* <div>
-          <span>
-            보호자:{' '}
-            <input
-              type="text"
-              value={editGuardian}
-              onChange={(e) => {
-                setEditGuardian(e.target.value);
-              }}
-            />
-          </span>
-
-          <span>
-            반려동물:{' '}
-            <input
-              type="text"
-              value={editCompanionAnimal}
-              onChange={(e) => {
-                setEditCompanionAnimal(e.target.value);
-              }}
-            />
-          </span>
-        </div> */}
 
         <S.DescriptionWrapper>
           <S.UtilImage className="material-symbols-outlined">image</S.UtilImage>
-          <S.InputDescription type="textarea" name="comments" value={comments} onChange={onChange} />
+          <S.InputDescription type="textarea" name="content" value={content} onChange={onChange} />
         </S.DescriptionWrapper>
 
         <S.BottomAppBar>
