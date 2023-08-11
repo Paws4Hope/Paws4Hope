@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { auth, storage } from '../../firebase';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, updateProfile } from 'firebase/auth';
 
 function MyPage() {
   const [user, setUser] = useState(auth.currentUser);
@@ -29,17 +29,28 @@ function MyPage() {
     const storageRef = ref(storage, imagePath);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
-    try {
-      const snapshot = await uploadTask;
-      const downloadURL = await getDownloadURL(snapshot.ref);
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        // 진행률을 계산합니다.
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+      },
+      (error) => {
+        // 에러 처리
+        console.error(error);
+        alert('이미지 업로드 도중 오류가 발생했습니다.');
+      },
+      async () => {
+        // 업로드가 완료되면 다운로드 URL을 얻습니다.
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
-      await user.updateProfile({ photoURL: downloadURL });
+        // 프로필 업데이트
+        await updateProfile(auth?.currentUser, { photoURL: downloadURL });
 
-      alert('프로필 이미지가 업데이트되었습니다.');
-    } catch (e) {
-      console.error(e);
-      alert('이미지 업로드 도중 오류가 발생했습니다.');
-    }
+        alert('프로필 이미지가 업데이트되었습니다.');
+      }
+    );
   };
 
   return (
