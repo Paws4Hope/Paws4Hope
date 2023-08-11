@@ -28,6 +28,11 @@ function Login() {
       console.error('로그인 에러:', error);
     }
   };
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
+  };
 
   return (
     <S.Layout>
@@ -62,7 +67,9 @@ function Login() {
               <S.ButtonText>회원가입</S.ButtonText>
             </Link>
           </S.AuthLink>
-          <button onClick={handleLogin}>로그인</button>
+          <button onClick={handleLogin} onKeyDown={handleKeyDown}>
+            로그인
+          </button>
         </S.Card>
       </S.RightWrapper>
     </S.Layout>
