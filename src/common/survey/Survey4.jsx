@@ -11,8 +11,8 @@ import { prevSurvey } from '../../redux/modules/submitSurvey';
 const Survey4 = () => {
   const submitSurvey = useSelector((state) => state.submitSurvey);
   console.log('여기까지', submitSurvey);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [q15, setQ15] = useState('');
@@ -21,9 +21,14 @@ const Survey4 = () => {
   const [q18, setQ18] = useState('');
 
   const onAddHandler = () => {
-    const dialog4 = [q15, q16, q17, q18];
+    const dialog4 = { q15, q16, q17, q18 };
     dispatch(addSurvey(dialog4));
-    surveys({ ...submitSurvey, ...dialog4 });
+    // 에러 가능성 2가지
+    // 1. 파이어베이스 저장 방법에 대해서 고민을 해보는게 좋습니다.!
+    // 다음 버튼 만들어서 데이터 잘 들어 오는지 확인해보기!
+
+    surveys({ ...submitSurvey, dialog4 });
+    // surveys(submitSurvey);
   };
 
   //

@@ -14,7 +14,7 @@ const Survey2 = () => {
   const [q09, setQ9] = useState('');
 
   const onAddHandler = () => {
-    const dialog2 = [q05, q06, q07, q08, q09];
+    const dialog2 = { q05, q06, q07, q08, q09 };
     dispatch(addSurvey(dialog2));
   };
 
