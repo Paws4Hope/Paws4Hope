@@ -6,7 +6,6 @@ import moment from 'moment';
 import { useMutation, QueryClient } from '@tanstack/react-query';
 import useInput from '../../../hooks/useInput';
 import { Button } from '../../../components';
-import ImageUpload from '../ImageUpload';
 import { nanoid } from 'nanoid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../../../firebase';
@@ -45,7 +44,7 @@ const AddList = () => {
 
   // 2. 파이어베이스 storage 저장 [ㅇ]
   const handleFileSelect = async (file) => {
-    const imageRef = ref(storage, `images/${nanoid() + ImageUpload.name}`);
+    const imageRef = ref(storage, `images/${nanoid()}`);
     await uploadBytes(imageRef, file);
     const downloadURL = await getDownloadURL(imageRef);
     setThumbNail(downloadURL);

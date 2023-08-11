@@ -1,29 +1,53 @@
+import * as S from './Header.styled';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase';
+import { useNavigate } from 'react-router-dom';
+import Logo from '../../assets/images/logo.svg';
+import LogoutButton from '../login/LogoutButton';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
+  const navigate = useNavigate();
+  const isLoginUser = useSelector((state) => state.user);
+
   return (
     <>
-      <header>
-        <div>
-          <div>Logo</div>
+      <S.Header>
+        <S.Gnb>
           <div>
-            <nav>
-              <li>임시보호소개</li>
-              <li>동물소개</li>
-              <li>입양후기</li>
-              <li>커뮤니티</li>
-            </nav>
+            <img src={Logo} />
           </div>
-          <div>search</div>
-          <div>
-            <button>로그인</button>
-            <button>로그아웃</button>
-          </div>
-        </div>
-      </header>
+          <S.Nav>
+            <S.NavItem>임시보호소개</S.NavItem>
+            <S.NavItem>동물소개</S.NavItem>
+            <S.NavItem>입양후기</S.NavItem>
+            <S.NavItem>커뮤니티</S.NavItem>
+          </S.Nav>
+        </S.Gnb>
+        <S.Search placeholder="어떤게 궁금하신가요?" />
+        <S.ButtonWrapper>
+          {isLoginUser ? (
+            <>
+              <S.ProfileWrapper>
+                <S.Avatar>
+                  <img src={isLoginUser.photoURL} />
+                </S.Avatar>
+                <span>{isLoginUser.displayName}</span>
+              </S.ProfileWrapper>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => {
+                  navigate('/login');
+                }}
+              >
+                로그인
+              </button>
+              <LogoutButton />
+            </>
+          )}
+        </S.ButtonWrapper>
+      </S.Header>
     </>
   );
 };

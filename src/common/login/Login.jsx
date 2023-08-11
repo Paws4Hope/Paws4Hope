@@ -4,9 +4,12 @@ import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { validateEmail, validatePassword } from '../siginup/validation';
 import ButtonGoogle from '../../assets/images/btn_google.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import ImageSignUp from '../../assets/images/img_signup.png';
 
 function Login() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -23,15 +26,22 @@ function Login() {
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log('로그인 성공:', userCredential.user);
+      navigate('/');
     } catch (error) {
       console.error('로그인 에러:', error);
+    }
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin();
     }
   };
 
   return (
     <S.Layout>
-      <S.LeftWrapper></S.LeftWrapper>
+      <S.LeftWrapper>
+        <S.Image src={ImageSignUp} alt="로그인 이미지" />
+      </S.LeftWrapper>
       <S.RightWrapper>
         <S.Card>
           <S.Title>로그인</S.Title>
@@ -62,7 +72,9 @@ function Login() {
               <S.ButtonText>회원가입</S.ButtonText>
             </Link>
           </S.AuthLink>
-          <button onClick={handleLogin}>로그인</button>
+          <button onClick={handleLogin} onKeyDown={handleKeyDown}>
+            로그인
+          </button>
         </S.Card>
       </S.RightWrapper>
     </S.Layout>
