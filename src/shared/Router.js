@@ -17,7 +17,6 @@ import { Header } from '../common';
 const Router = () => {
   return (
     <Routes>
-      {/* <Route path="/" element={<Pets />}></Route> */}
       <Route element={<Header />}>
         <Route path="/community" element={<Community />} />
         <Route path="/community/:id" element={<CommunityDetail />} />
