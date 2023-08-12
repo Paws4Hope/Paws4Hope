@@ -1,3 +1,4 @@
+import * as S from './Pets.styled';
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { AnimalApi, SidoApi } from '../../api/api';
@@ -6,6 +7,7 @@ import InterestButton from './InterestButton';
 import Loading from '../../components/Loading/Loading';
 import { styled } from 'styled-components';
 import './PetsDetail.css';
+import Masonry from 'react-masonry-css';
 
 Modal.setAppElement('#root'); // 모달을 사용할 루트 엘리먼트 설정
 
@@ -18,14 +20,23 @@ function Pets() {
   const [sidoState, setSidoState] = useState('6260000');
   const [selectedArea, setSelectedArea] = useState(null);
 
+  // Masonry Layout 적용
+  // const breakPointPetsColumns = {
+  //   default: 4,
+  //   450: 1
+  // };
+
+  const breakpointBlogPostColumnsObj = {
+    default: 4,
+    450: 1
+  };
+
   useEffect(() => {
     setUser('asdasd');
   }, []);
 
   const { data, isLoading } = useQuery(['animalData', sidoState], () => AnimalApi(sidoState));
   const { data: sido } = useQuery(['sidoData'], SidoApi);
-
-  console.log(data);
 
   const sidoData = sido?.response?.body?.items?.item || [];
   // ... (status 체크, 로딩 및 에러 처리 등)
@@ -95,6 +106,76 @@ function Pets() {
 
         {/* 다른 지역 버튼들도 추가할 수 있음 */}
       </div>
+
+      {/* Masonry UI Layout */}
+      <S.BlogPostListContainer>
+        <Masonry
+          breakpointCols={breakpointBlogPostColumnsObj}
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
+        >
+          {filteredAnimals.map((animal) => (
+            <div key={animal.desertionNo} className="animal-card">
+              {/* 이미지 클릭 시 모달 열기 */}
+              {/* 유기번호를 동물 고유아이디로 넘기기 */}
+              {animal.processState.substring(0, 2) !== '종료' && (
+                <StPetImg
+                  className="animal-image"
+                  src={animal.popfile}
+                  alt={`Animal ${animal.desertionNo}`}
+                  onClick={() => openModal(animal)}
+                />
+              )}
+              {/* 선택한 동물의 이미지를 모달에 표시 */}
+              {selectedAnimalDetail === animal && (
+                <Modal
+                  isOpen={modalIsOpen}
+                  onRequestClose={closeModal}
+                  contentLabel="Animal Detail Modal"
+                  className="modal"
+                  overlayClassName="modal-overlay"
+                >
+                  <div className="animal-detail-popup">
+                    <h2>상세 정보</h2>
+                    {/* 상세 정보 표시 */}
+                    <p>공고시작일: {selectedAnimalDetail.noticeSdt}</p>
+                    <p>공고종료일: {selectedAnimalDetail.noticeEdt}</p>
+                    <p>보호소: {selectedAnimalDetail.careNm}</p>
+                    <p>보호소 전화번호: {selectedAnimalDetail.careTel}</p>
+                    <p>품종: {selectedAnimalDetail.kindCd}</p>
+                    <p>색상: {selectedAnimalDetail.colorCd}</p>
+                    <p>중성화여부: {selectedAnimalDetail.neuterYn}</p>
+                    <p>나이: {selectedAnimalDetail.age}</p>
+                    <p>성별: {selectedAnimalDetail.sexCd}</p>
+                    <p>상태: {selectedAnimalDetail.processState}</p>
+                    <p>발견장소: {selectedAnimalDetail.happenPlace}</p>
+                    <p>특징: {selectedAnimalDetail.specialMark}</p>
+                    <p>유기번호: {selectedAnimalDetail.desertionNo}</p>
+                  </div>
+                  {/* 관심등록 버튼 */}
+                  {/* 로그인되었을 때만 보이도록 설정 */}
+                  <div className="buttonwithimg">
+                    {user && (
+                      <InterestButton
+                        animalId={animal.desertionNo}
+                        isInterested={isInterested(animal.desertionNo)}
+                        toggleInterest={toggleInterest}
+                      />
+                    )}
+                    <StPetImg
+                      className="animal-image-modal"
+                      src={selectedAnimalDetail.popfile}
+                      alt={`Animal ${selectedAnimalDetail.desertionNo}`}
+                    />
+                    {/* 모달 닫기 버튼 */}
+                    <button onClick={closeModal}>닫기</button>
+                  </div>
+                </Modal>
+              )}
+            </div>
+          ))}
+        </Masonry>
+      </S.BlogPostListContainer>
 
       <StPetImgBox className="album-container">
         {/* 동물 데이터를 매핑하여 카드 표시 */}
