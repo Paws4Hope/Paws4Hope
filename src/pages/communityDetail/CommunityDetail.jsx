@@ -1,7 +1,8 @@
 import React from 'react';
+import PostDetail from '../../common/community/postDetail/PostDetail';
 
 const CommunityDetail = () => {
-  return <div></div>;
+  return <PostDetail />;
 };
 
 export default CommunityDetail;

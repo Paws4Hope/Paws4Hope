@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { auth, storage } from '../../firebase';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { onAuthStateChanged, updateProfile } from 'firebase/auth';
+import LogoutButton from '../login/LogoutButton';
 
 function MyPage() {
   const [user, setUser] = useState(auth.currentUser);
@@ -69,6 +70,7 @@ function MyPage() {
             <input type="file" onChange={handleChangeImage} />
             <button onClick={handleUploadImage}>프로필 이미지 업로드</button>
           </div>
+          <LogoutButton />
         </div>
       ) : (
         <p>로그인한 사용자가 없습니다.</p>

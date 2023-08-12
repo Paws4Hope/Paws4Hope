@@ -6,29 +6,32 @@ import {
   CommunityPost,
   EditMyapge,
   Login,
-  Signup,
   Mypage,
   PetDetail,
   Pets,
-  SurveyForm
+  SurveyForm,
+  Signup,
+  Main
 } from '../pages';
-import { Header } from '../common';
+import SurveyDone from '../pages/surveyForm/SurveyDone';
+import { GlobalLayout } from '../common';
 
 const Router = () => {
   return (
     <Routes>
-      {/* <Route path="/" element={<Pets />}></Route> */}
-      <Route element={<Header />}>
+      <Route element={<GlobalLayout />}>
+        <Route path="/" element={<Main />} />
         <Route path="/community" element={<Community />} />
         <Route path="/community/:id" element={<CommunityDetail />} />
-        <Route path="/community/edit/:id" element={<CommunityEdit />} />
-        <Route path="/community/post" element={<CommunityPost />} />
       </Route>
+      <Route path="/community/edit/:id" element={<CommunityEdit />} />
+      <Route path="/community/post" element={<CommunityPost />} />
       <Route path="/mypage" element={<Mypage />} />
       <Route path="/mypage/edit" element={<EditMyapge />} />
-      <Route path="/" element={<Pets />} />
+      <Route path="/pets" element={<Pets />} />
       <Route path="/pets/:id" element={<PetDetail />} />
       <Route path="/surveyform" element={<SurveyForm />} />
+      <Route path="/surveyDone" element={<SurveyDone />} />
 
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />

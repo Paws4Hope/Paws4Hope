@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const Header = styled.header`
   display: flex;
@@ -21,10 +22,11 @@ export const Nav = styled.nav`
   gap: 24px;
 `;
 
-export const NavItem = styled.li`
+export const NavItem = styled(Link)`
   font-size: 18px;
   color: var(--color-black);
   list-style: none;
+  text-decoration: none;
 `;
 
 export const ButtonWrapper = styled.div`
@@ -38,13 +40,13 @@ export const Search = styled.input`
   border-radius: 4px;
 `;
 
-export const ProfileWrapper = styled.div`
+export const ProfileWrapper = styled.a`
   display: flex;
   align-items: center;
 
   & span {
     font-size: 18px;
-    margin-left: 6px;
+    margin-left: 10px;
   }
 `;
 
@@ -52,5 +54,12 @@ export const Avatar = styled.figure`
   width: 48px;
   height: 48px;
   border-radius: 30px;
-  background-color: #f4f4f4;
+  overflow: hidden;
+  background-color: var(--color-gray-100);
+
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;

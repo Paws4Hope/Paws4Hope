@@ -1,5 +1,5 @@
 import React from 'react';
-import EditList from '../../common/community/EditList';
+import { EditList } from '../../common';
 
 const CommunityEdit = () => {
   return (

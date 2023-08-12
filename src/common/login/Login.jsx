@@ -2,10 +2,11 @@ import * as S from './Login.styled';
 import React, { useState } from 'react';
 import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { validateEmail, validatePassword } from '../siginup/validation';
+import { validateEmail, validatePassword } from '../signup/validation';
 import ButtonGoogle from '../../assets/images/btn_google.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import ImageSignUp from '../../assets/images/img_signup.png';
+import { Button } from '../../components';
 
 function Login() {
   const navigate = useNavigate();

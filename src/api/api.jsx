@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 /*
  * 오픈API (유기동물 조회)
  * URL : http://apis.data.go.kr
@@ -79,7 +78,7 @@ export async function AnimalKindApi() {
 }
 
 /** 5) [유기동물] - 오픈API 유기동물 데이터 조회  */
-export async function AnimalApi() {
+export async function AnimalApi(sidoName) {
   const url = `${BASE_URL}/abandonmentPublic`;
   const queryParams =
     '?' +
@@ -90,6 +89,10 @@ export async function AnimalApi() {
     encodeURIComponent('endde') +
     '=' +
     encodeURIComponent(20230808) +
+    '&' +
+    encodeURIComponent('upr_cd') +
+    '=' +
+    encodeURIComponent(sidoName) +
     DATA_API_KEY;
 
   const response = await axios.get(url + queryParams);
