@@ -16,7 +16,6 @@ function Pets() {
   const [selectedAnimalDetail, setSelectedAnimalDetail] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [sidoState, setSidoState] = useState('6260000');
-  const [selectedMessage, setSelectedMessage] = useState('');
 
   useEffect(() => {
     setUser('asdasd');
@@ -155,8 +154,6 @@ function Pets() {
                   />
                   {/* 모달 닫기 버튼 */}
                   <button onClick={closeModal}>닫기</button>
-                  {/* 선택 메시지 표시 */}
-                  {selectedMessage && <p>{selectedMessage}</p>}
                 </div>
               </Modal>
             )}
