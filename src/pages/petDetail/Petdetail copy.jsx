@@ -4,6 +4,8 @@ import { AnimalApi, SidoApi } from '../../api/api';
 import Modal from 'react-modal';
 import '../petDetail/copy.styled.css';
 import InterestButton from './InterestButton';
+import Loading from '../../components/Loading/Loading';
+import { styled } from 'styled-components';
 
 Modal.setAppElement('#root'); // 모달을 사용할 루트 엘리먼트 설정
 
@@ -14,12 +16,13 @@ function Petdetailcopy() {
   const [selectedAnimalDetail, setSelectedAnimalDetail] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [sidoState, setSidoState] = useState('6260000');
+  const [selectedArea, setSelectedArea] = useState(null);
 
   useEffect(() => {
     setUser('asdasd');
-  });
+  }, []);
 
-  const { data, status } = useQuery(['animalData', sidoState], () => AnimalApi(sidoState));
+  const { data, status, isLoading } = useQuery(['animalData', sidoState], () => AnimalApi(sidoState));
   const { data: sido } = useQuery(['sidoData'], SidoApi);
 
   const sidoData = sido?.response?.body?.items?.item || [];
@@ -61,6 +64,8 @@ function Petdetailcopy() {
     return interests.includes(animalId);
   };
 
+  if (isLoading) return <Loading />;
+
   return (
     <div>
       <h1>동물 친구들을 소개합니다.</h1>
@@ -88,18 +93,21 @@ function Petdetailcopy() {
 
         {/* 다른 지역 버튼들도 추가할 수 있음 */}
       </div>
-      <div className="album-container">
+
+      <StPetImgBox className="album-container">
         {/* 동물 데이터를 매핑하여 카드 표시 */}
         {filteredAnimals.map((animal) => (
           <div key={animal.desertionNo} className="animal-card">
             {/* 이미지 클릭 시 모달 열기 */}
             {/* 유기번호를 동물 고유아이디로 넘기기 */}
-            <img
-              className="animal-image"
-              src={animal.popfile}
-              alt={`Animal ${animal.desertionNo}`}
-              onClick={() => openModal(animal)}
-            />
+            {animal.processState.substring(0, 2) !== '종료' && (
+              <StPetImg
+                className="animal-image"
+                src={animal.popfile}
+                alt={`Animal ${animal.desertionNo}`}
+                onClick={() => openModal(animal)}
+              />
+            )}
             {/* 선택한 동물의 이미지를 모달에 표시 */}
             {selectedAnimalDetail === animal && (
               <Modal
@@ -109,15 +117,6 @@ function Petdetailcopy() {
                 className="modal"
                 overlayClassName="modal-overlay"
               >
-                {/* 관심등록 버튼 */}
-                {/* 로그인되었을 때만 보이도록 설정 */}
-                {user && (
-                  <InterestButton
-                    animalId={animal.desertionNo}
-                    isInterested={isInterested(animal.desertionNo)}
-                    toggleInterest={toggleInterest}
-                  />
-                )}
                 <div className="animal-detail-popup">
                   <h2>상세 정보</h2>
                   {/* 상세 정보 표시 */}
@@ -134,7 +133,18 @@ function Petdetailcopy() {
                   <p>발견장소: {selectedAnimalDetail.happenPlace}</p>
                   <p>특징: {selectedAnimalDetail.specialMark}</p>
                   <p>유기번호: {selectedAnimalDetail.desertionNo}</p>
-                  <img
+                </div>
+                {/* 관심등록 버튼 */}
+                {/* 로그인되었을 때만 보이도록 설정 */}
+                <div className="buttonwithimg">
+                  {user && (
+                    <InterestButton
+                      animalId={animal.desertionNo}
+                      isInterested={isInterested(animal.desertionNo)}
+                      toggleInterest={toggleInterest}
+                    />
+                  )}
+                  <StPetImg
                     className="animal-image-modal"
                     src={selectedAnimalDetail.popfile}
                     alt={`Animal ${selectedAnimalDetail.desertionNo}`}
@@ -146,9 +156,16 @@ function Petdetailcopy() {
             )}
           </div>
         ))}
-      </div>
+      </StPetImgBox>
     </div>
   );
 }
 
 export default Petdetailcopy;
+
+const StPetImgBox = styled.div``;
+const StPetImg = styled.img`
+  /* 이미지 너비 */
+  width: 500px;
+  margin-top: 20px; /* 이미지와 상세 정보 사이의 여백 조절 */
+`;
