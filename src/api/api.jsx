@@ -1,4 +1,6 @@
 import axios from 'axios';
+// import { response } from 'express';
+
 /*
  * 오픈API (유기동물 조회)
  * URL : http://apis.data.go.kr
@@ -37,14 +39,13 @@ export async function SidoApi() {
     DATA_API_KEY;
 
   const response = await axios.get(url + queryParams);
-
   return response.data;
 }
 
 /** 2) [시/군/구] - 오픈API 유기동물 데이터 조회  */
 export async function SigunguApi() {
   const url = `${BASE_URL}/sigungu`;
-  const queryParams = '?' + encodeURIComponent('upr_cd') + '=' + encodeURIComponent(6110000) + DATA_API_KEY;
+  const queryParams = '?' + encodeURIComponent('upr_cd') + '=' + encodeURIComponent(6260000) + DATA_API_KEY;
 
   const response = await axios.get(url + queryParams);
   return response.data;
@@ -78,13 +79,13 @@ export async function AnimalKindApi() {
 }
 
 /** 5) [유기동물] - 오픈API 유기동물 데이터 조회  */
-export async function AnimalApi(sidoName) {
+export async function AnimalApi(sidoState) {
   const url = `${BASE_URL}/abandonmentPublic`;
   const queryParams =
     '?' +
     encodeURIComponent('bgnde') +
     '=' +
-    encodeURIComponent(20230801) +
+    encodeURIComponent(20220401) +
     '&' +
     encodeURIComponent('endde') +
     '=' +
@@ -92,7 +93,15 @@ export async function AnimalApi(sidoName) {
     '&' +
     encodeURIComponent('upr_cd') +
     '=' +
-    encodeURIComponent(sidoName) +
+    encodeURIComponent(sidoState) +
+    '&' +
+    encodeURIComponent('endde') +
+    '=' +
+    encodeURIComponent(17) +
+    '&' +
+    encodeURIComponent('upr_cd') +
+    '=' +
+    encodeURIComponent(1) +
     DATA_API_KEY;
 
   const response = await axios.get(url + queryParams);

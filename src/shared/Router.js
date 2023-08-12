@@ -15,6 +15,7 @@ import {
 } from '../pages';
 import SurveyDone from '../pages/surveyForm/SurveyDone';
 import { GlobalLayout } from '../common';
+import Petdetailcopy from '../pages/petDetail/Petdetail copy';
 
 const Router = () => {
   return (
@@ -32,6 +33,7 @@ const Router = () => {
       <Route path="/pets/:id" element={<PetDetail />} />
       <Route path="/surveyform" element={<SurveyForm />} />
       <Route path="/surveyDone" element={<SurveyDone />} />
+      <Route path="/petsdetailcopy" element={<Petdetailcopy />} />
 
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
