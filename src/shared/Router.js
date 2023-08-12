@@ -10,10 +10,10 @@ import {
   PetDetail,
   Pets,
   SurveyForm,
+  SurveyDone,
   Signup,
   Main
 } from '../pages';
-import SurveyDone from '../pages/surveyForm/SurveyDone';
 import { GlobalLayout } from '../common';
 
 const Router = () => {
@@ -29,7 +29,6 @@ const Router = () => {
       <Route path="/mypage" element={<Mypage />} />
       <Route path="/mypage/edit" element={<EditMyapge />} />
       <Route path="/pets" element={<Pets />} />
-      <Route path="/pets/:id" element={<PetDetail />} />
       <Route path="/surveyform" element={<SurveyForm />} />
       <Route path="/surveyDone" element={<SurveyDone />} />
 
