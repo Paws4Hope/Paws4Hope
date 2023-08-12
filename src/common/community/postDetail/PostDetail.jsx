@@ -4,11 +4,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getLists } from '../../../api/lists';
 import { Button } from '../../../components';
+import { useSelector } from 'react-redux';
 
 const PostDetail = () => {
   const { id } = useParams();
   const { data, status } = useQuery(['posts'], getLists);
-  const findPost = data.find((post) => post.id === id);
+  const findPost = data?.find((post) => post.id === id);
+
+  const loginUser = useSelector((state) => state.user);
 
   const navigate = useNavigate();
 
@@ -42,13 +45,15 @@ const PostDetail = () => {
         </S.TitleWrapper>
         <div>
           <S.ThumbNail>
-            <img></img>
+            <img src={findPost.thumbNail} />
           </S.ThumbNail>
           <S.Title>{findPost.title}</S.Title>
           <S.ProfileWrapper>
-            <S.AvatarFigure>{/* <img src="" alt="프로필 이미지" /> */}</S.AvatarFigure>
+            <S.AvatarFigure>
+              <img src={findPost.avatar} alt="" />
+            </S.AvatarFigure>
             <S.Ul>
-              <S.DisplayName>작성자</S.DisplayName>
+              <S.DisplayName>{findPost.author}</S.DisplayName>
               <S.Time>{findPost.time}</S.Time>
             </S.Ul>
           </S.ProfileWrapper>

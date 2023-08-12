@@ -59,11 +59,13 @@ export const Button = styled.button`
 
   ${(props) =>
     // outLine Button
-    props.size === 'XLarge' &&
+    props.size === 'Large' &&
     css`
+      justify-content: center;
       width: 100%;
       height: 48px;
       border: 1px solid var(--color-${props.color});
       color: var(--color-white);
+      margin-top: 24px;
     `}
 `;

@@ -5,6 +5,7 @@ const initialState = [
     uid: '',
     displayName: '',
     email: '',
+    photoURL: '',
     isLogin: false
   }
 ];

@@ -11,9 +11,11 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { useSelector } from 'react-redux';
 
 const Lists = () => {
   const navigate = useNavigate();
+  const loginUser = useSelector((state) => state.user);
 
   //쿼리!!!!!
   const { data, status } = useQuery(['posts'], getLists);
@@ -61,43 +63,48 @@ const Lists = () => {
             {orderedData?.map((item) => {
               return (
                 <>
-                  <S.Card
-                    key={item.id}
-                    onClick={() => {
-                      navigate(`/community/${item.id}`);
-                    }}
-                  >
+                  <S.Card key={item.id}>
                     <S.Content>
-                      <S.Title>{item.title}</S.Title>
+                      <S.Title
+                        onClick={() => {
+                          navigate(`/community/${item.id}`);
+                        }}
+                      >
+                        {item.title}
+                      </S.Title>
                       <S.Description>{item.content}</S.Description>
                       <S.CardInfo>
                         <S.IconWrapper>
-                          <S.Item>작성자</S.Item>
+                          <S.Item>{item.author}</S.Item>
                           <S.Item>좋아요</S.Item>
                           <S.Item>댓글</S.Item>
                           <S.Item>{item.time}</S.Item>
                         </S.IconWrapper>
-                        <S.ButtonWrapper>
-                          <S.ButtonText
-                            onClick={() => {
-                              mutation.mutate(item.id);
-                            }}
-                          >
-                            삭제
-                          </S.ButtonText>
-                          <S.ButtonText
-                            onClick={() => {
-                              navigate(`/community/edit/${item.id}`);
-                            }}
-                          >
-                            수정
-                          </S.ButtonText>
-                        </S.ButtonWrapper>
+                        {loginUser.uid === item.uid ? (
+                          <S.ButtonWrapper>
+                            <S.ButtonText
+                              onClick={() => {
+                                mutation.mutate(item.id);
+                              }}
+                            >
+                              삭제
+                            </S.ButtonText>
+                            <S.ButtonText
+                              onClick={() => {
+                                navigate(`/community/edit/${item.id}`);
+                              }}
+                            >
+                              수정
+                            </S.ButtonText>
+                          </S.ButtonWrapper>
+                        ) : null}
                       </S.CardInfo>
                     </S.Content>
-                    <S.Figure>
-                      <S.ThumbNail src={item.thumbNail} alt="" />
-                    </S.Figure>
+                    {item.thumbNail ? (
+                      <S.Figure>
+                        <S.ThumbNail src={item.thumbNail} alt="" />
+                      </S.Figure>
+                    ) : null}
                   </S.Card>
                 </>
               );

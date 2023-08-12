@@ -9,12 +9,13 @@ import { Button } from '../../../components';
 import { nanoid } from 'nanoid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../../../firebase';
+import { useSelector } from 'react-redux';
 
 const AddList = () => {
   const navigate = useNavigate();
   // 시간
   const nowTime = moment().format('YYYY-MM-DD HH:mm:ss');
-
+  const loginUser = useSelector((state) => state.user);
   const queryClient = new QueryClient();
 
   const mutation = useMutation(addList, {
@@ -55,9 +56,9 @@ const AddList = () => {
 
     const newPost = {
       id: nanoid(),
-      uid: '',
-      author: '',
-      avatar: '',
+      uid: loginUser.uid,
+      author: loginUser.displayName,
+      avatar: loginUser.photoURL,
       title,
       content,
       like: 0,
@@ -66,6 +67,7 @@ const AddList = () => {
       comments: [],
       time: nowTime
     };
+
     mutation.mutate({ newPost, id: newPost.id });
     navigate('/community');
   };
@@ -75,7 +77,7 @@ const AddList = () => {
       {thumbNail}
       <S.contentForm onSubmit={onAddHandler}>
         <S.TitleWrapper>
-          <S.InputTitle placeholder="제목을 입력하세요" name="title" value={title} onChange={onChange} />
+          <S.InputTitle required placeholder="제목을 입력하세요" name="title" value={title} onChange={onChange} />
           <div>
             <label htmlFor="imageFile">썸네일 추가</label>
             <img src={preview} />
@@ -97,7 +99,13 @@ const AddList = () => {
 
         <S.BottomAppBar>
           <S.AppBarInner>
-            <Button variant="textIcon" color="gray">
+            <Button
+              variant="textIcon"
+              color="gray"
+              onClick={() => {
+                navigate('/community');
+              }}
+            >
               <span className="material-symbols-outlined">west</span>
               나가기
             </Button>

@@ -1,15 +1,21 @@
 import * as S from './SignUp.styled';
 import { auth } from '../../firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { validateEmail, validatePassword, validateNickname, validatePhone } from '../siginup/validation';
+import { validateEmail, validatePassword, validateNickname, validatePhone } from './validation';
 import useInput from '../../hooks/useInput';
 import { useNavigate } from 'react-router-dom';
 import ButtonGoogle from '../../assets/images/btn_google.svg';
 import ImageSignUp from '../../assets/images/img_signup.png';
 import { Link } from 'react-router-dom';
+import { Button } from '../../components';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../redux/modules/userSlice';
 
 function SignUp() {
   const navigate = useNavigate();
+  const AVATAR_URL =
+    'https://firebasestorage.googleapis.com/v0/b/in-vision-4681f.appspot.com/o/profileImages%2Fico_avatar.svg?alt=media&token=277c595b-156d-4d74-be00-eedbd729555d';
+  const dispatch = useDispatch();
 
   const [{ email, password, passwordVerify, nickname }, onChange] = useInput('');
 
@@ -39,7 +45,16 @@ function SignUp() {
       const user = userCredential.user;
 
       try {
-        await updateProfile(user, { displayName: nickname });
+        await updateProfile(user, { displayName: nickname, photoURL: AVATAR_URL });
+        await dispatch(
+          setUser({
+            uid: user?.uid,
+            displayName: user?.displayName,
+            email: user?.email,
+            photoURL: user?.photoURL,
+            isLogin: true
+          })
+        );
       } catch (error) {
         console.log('사용자정보 업데이트 오류 : ', error.code);
       }
@@ -85,13 +100,16 @@ function SignUp() {
             <S.Input type="password" name="passwordVerify" value={passwordVerify} onChange={onChange} />
           </S.InputItem>
 
+          <Button variant="solid" color="black" size="Large" onClick={handleSignUp}>
+            회원가입
+          </Button>
+
           <S.AuthLink>
             이미 회원이신가요?
             <Link to="/login">
               <S.ButtonText>로그인</S.ButtonText>
             </Link>
           </S.AuthLink>
-          <button onClick={handleSignUp}>회원가입</button>
         </S.Card>
       </S.RightWrapper>
     </S.Layout>

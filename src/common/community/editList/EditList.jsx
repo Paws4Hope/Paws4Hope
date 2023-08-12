@@ -61,7 +61,13 @@ const EditList = () => {
 
         <S.BottomAppBar>
           <S.AppBarInner>
-            <Button variant="textIcon" color="gray">
+            <Button
+              variant="textIcon"
+              color="gray"
+              onClick={() => {
+                navigate('/community');
+              }}
+            >
               <span className="material-symbols-outlined">west</span>
               나가기
             </Button>

@@ -18,7 +18,7 @@ export const CardList = styled.div`
   }
 `;
 
-export const Card = styled.a`
+export const Card = styled.div`
   display: grid;
   grid-template-columns: 75% 25%;
   align-items: center;
@@ -46,13 +46,22 @@ export const PageTitle = styled.h2`
   margin-bottom: 36px;
 `;
 
+export const TitleLink = styled(Link)``;
+
 export const Title = styled.h3`
+  display: inline-block;
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 8px;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+    transition: 0.3 ease;
+  }
 `;
 
 export const Description = styled.p`
+  display: inline-block;
   font-size: 16px;
   line-height: 23px;
   color: var(--color-gray-300);

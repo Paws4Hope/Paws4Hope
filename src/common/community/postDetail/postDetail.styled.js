@@ -37,6 +37,12 @@ export const ThumbNail = styled.figure`
   border-radius: 30px;
   background-color: var(--color-gray-400);
   margin-top: 24px;
+  overflow: hidden;
+
+  & img {
+    width: 100%;
+    object-fit: cover;
+  }
 `;
 
 export const Title = styled.h1`
@@ -56,6 +62,12 @@ export const AvatarFigure = styled.figure`
   border-radius: 30px;
   background-color: var(--color-gray-400);
   margin-right: 8px;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 export const Ul = styled.ul`

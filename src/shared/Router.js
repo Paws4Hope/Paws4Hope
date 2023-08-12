@@ -6,7 +6,6 @@ import {
   CommunityPost,
   EditMyapge,
   Login,
-  Signup,
   Mypage,
   PetDetail,
   Pets,
@@ -15,18 +14,18 @@ import {
   Main
 } from '../pages';
 import SurveyDone from '../pages/surveyForm/SurveyDone';
-import { Header } from '../common';
+import { GlobalLayout } from '../common';
 
 const Router = () => {
   return (
     <Routes>
-      <Route element={<Header />}>
+      <Route element={<GlobalLayout />}>
         <Route path="/" element={<Main />} />
         <Route path="/community" element={<Community />} />
         <Route path="/community/:id" element={<CommunityDetail />} />
-        <Route path="/community/edit/:id" element={<CommunityEdit />} />
-        <Route path="/community/post" element={<CommunityPost />} />
       </Route>
+      <Route path="/community/edit/:id" element={<CommunityEdit />} />
+      <Route path="/community/post" element={<CommunityPost />} />
       <Route path="/mypage" element={<Mypage />} />
       <Route path="/mypage/edit" element={<EditMyapge />} />
       <Route path="/pets" element={<Pets />} />

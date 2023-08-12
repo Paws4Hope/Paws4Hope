@@ -2,6 +2,7 @@
 import React from 'react';
 import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
+import { Button } from '../../components';
 
 function LogoutButton() {
   const handleLogout = async () => {
@@ -13,7 +14,7 @@ function LogoutButton() {
     }
   };
 
-  return <button onClick={handleLogout}>로그아웃</button>;
+  return <Button onClick={handleLogout}>로그아웃</Button>;
 }
 
 export default LogoutButton;
