@@ -16,7 +16,7 @@ function Pets() {
   const [selectedAnimalDetail, setSelectedAnimalDetail] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [sidoState, setSidoState] = useState('6260000');
-  const [selectedArea, setSelectedArea] = useState(null);
+  const [selectedMessage, setSelectedMessage] = useState('');
 
   useEffect(() => {
     setUser('asdasd');
@@ -55,9 +55,11 @@ function Pets() {
     if (isInterested(animalId)) {
       // 이미 관심 동물인 경우 제거
       setInterests(interests.filter((id) => id !== animalId));
+      window.alert('관심동물을 해지했습니다.');
     } else {
       // 관심 동물 리스트에 추가
       setInterests([...interests, animalId]);
+      window.alert('관심동물로 등록되었습니다');
     }
   };
 
@@ -153,6 +155,8 @@ function Pets() {
                   />
                   {/* 모달 닫기 버튼 */}
                   <button onClick={closeModal}>닫기</button>
+                  {/* 선택 메시지 표시 */}
+                  {selectedMessage && <p>{selectedMessage}</p>}
                 </div>
               </Modal>
             )}
