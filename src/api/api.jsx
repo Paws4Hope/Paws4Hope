@@ -95,11 +95,11 @@ export async function AnimalApi(sidoState) {
     '=' +
     encodeURIComponent(sidoState) +
     '&' +
-    encodeURIComponent('endde') +
+    encodeURIComponent('numberOfRows') +
     '=' +
     encodeURIComponent(17) +
     '&' +
-    encodeURIComponent('upr_cd') +
+    encodeURIComponent('pageNo') +
     '=' +
     encodeURIComponent(1) +
     DATA_API_KEY;
