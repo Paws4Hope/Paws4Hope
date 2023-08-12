@@ -16,7 +16,6 @@ import { useSelector } from 'react-redux';
 const Lists = () => {
   const navigate = useNavigate();
   const loginUser = useSelector((state) => state.user);
-
   //쿼리!!!!!
   const { data, status } = useQuery(['posts'], getLists);
 
@@ -29,6 +28,12 @@ const Lists = () => {
   });
 
   const orderedData = data?.sort((a, b) => new Date(b.time) - new Date(a.time));
+
+  const conFirmUser = (e) => {
+    e.preventDefault();
+
+    loginUser.isLogin ? navigate('/community/post') : alert('로그인을 진행해주세요');
+  };
 
   //scroll
   const MoveToTop = () => {
@@ -113,14 +118,8 @@ const Lists = () => {
         </S.CardInner>
 
         <div>
-          <Button
-            variant="solid"
-            color="black"
-            onClick={() => {
-              navigate('/community/post');
-            }}
-          >
-            추가
+          <Button variant="solid" color="black" onClick={conFirmUser}>
+            글쓰기
           </Button>
           {/* {orderedData?.map((item) => {
           return (

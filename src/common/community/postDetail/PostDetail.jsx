@@ -30,7 +30,7 @@ const PostDetail = () => {
   return (
     <>
       <S.Layout>
-        <S.TitleWrapper>
+        {/* <S.TitleWrapper>
           <S.PageTitle>커뮤니티</S.PageTitle>
           <Button
             variant="textIcon"
@@ -42,7 +42,7 @@ const PostDetail = () => {
             <span className="material-symbols-outlined">west</span>
             목록보기
           </Button>
-        </S.TitleWrapper>
+        </S.TitleWrapper> */}
         <div>
           <S.ThumbNail>
             <img src={findPost.thumbNail} />
@@ -57,6 +57,7 @@ const PostDetail = () => {
               <S.Time>{findPost.time}</S.Time>
             </S.Ul>
           </S.ProfileWrapper>
+
           <S.Content>{findPost.content}</S.Content>
         </div>
 
