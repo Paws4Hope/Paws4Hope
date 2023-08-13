@@ -27,13 +27,12 @@ const Survey4 = () => {
     // 1. 파이어베이스 저장 방법에 대해서 고민을 해보는게 좋습니다.!
     // 다음 버튼 만들어서 데이터 잘 들어 오는지 확인해보기!
 
-    surveys({ ...submitSurvey, dialog4 });
+    surveys({ ...submitSurvey, 4: dialog4 });
     // surveys(submitSurvey);
   };
 
   //
   const surveys = async (newsurveys) => {
-    console.log('dd', newsurveys);
     const newLists = await addDoc(collection(db, 'surveys'), newsurveys);
     return newLists;
   };

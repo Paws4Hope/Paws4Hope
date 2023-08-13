@@ -1,3 +1,4 @@
+import * as S from './Mypage.styled';
 import { useEffect, useState } from 'react';
 import { auth, storage } from '../../firebase';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
@@ -55,7 +56,7 @@ function MyPage() {
   };
 
   return (
-    <div>
+    <S.Layout>
       <h1>마이 페이지</h1>
       {user ? (
         <div>
@@ -75,7 +76,7 @@ function MyPage() {
       ) : (
         <p>로그인한 사용자가 없습니다.</p>
       )}
-    </div>
+    </S.Layout>
   );
 }
 

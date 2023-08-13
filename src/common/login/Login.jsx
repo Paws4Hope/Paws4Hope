@@ -73,9 +73,12 @@ function Login() {
               <S.ButtonText>회원가입</S.ButtonText>
             </Link>
           </S.AuthLink>
-          <button onClick={handleLogin} onKeyDown={handleKeyDown}>
+          <Button variant="solid" color="black" size="Large" onClick={handleLogin}>
             로그인
-          </button>
+          </Button>
+          {/* <button onClick={handleLogin} onKeyDown={handleKeyDown}>
+            로그인
+          </button> */}
         </S.Card>
       </S.RightWrapper>
     </S.Layout>

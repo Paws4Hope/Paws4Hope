@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import LogoutButton from '../login/LogoutButton';
 
 export const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 1100px;
+  max-width: var(--global-inner);
   margin: 0 auto;
   margin-top: 28px;
 `;
@@ -30,6 +31,11 @@ export const NavItem = styled(Link)`
 `;
 
 export const ButtonWrapper = styled.div`
+  position: relative;
+`;
+
+export const BaiscButtonWrapper = styled.div`
+  position: relative;
   display: flex;
 `;
 
@@ -47,6 +53,53 @@ export const ProfileWrapper = styled.a`
   & span {
     font-size: 18px;
     margin-left: 10px;
+  }
+`;
+
+export const Menu = styled.div`
+  position: absolute;
+  z-index: 99;
+  background-color: var(--color-white);
+  right: 0;
+  border-radius: 8px;
+  display: none;
+  width: 140px;
+  margin-top: 14px;
+  overflow: hidden;
+
+  &.active {
+    display: inline-block;
+    box-shadow: 0px 0px 30px 1px rgba(0, 0, 0, 0.1);
+  }
+
+  & li {
+    width: 100%;
+    padding: 12px 14px;
+    list-style: none;
+
+    &:hover {
+      background-color: var(--color-gray-400);
+    }
+
+    & ${NavItem} {
+      font-size: 16px;
+
+      &:hover {
+        opacity: 0.6;
+      }
+    }
+
+    & button {
+      font-size: 16px;
+      padding: 0;
+    }
+  }
+
+  & ul:first-child {
+    padding-top: 6px;
+  }
+  & ul:last-child {
+    padding-bottom: 2px;
   }
 `;
 
