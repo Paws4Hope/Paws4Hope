@@ -7,6 +7,7 @@ export const Layout = styled.ul`
 `;
 
 export const PetsLayout = styled.ul`
+  margin-top: 32px;
   .my-masonry-grid {
     display: flex;
 
@@ -45,18 +46,45 @@ export const PetThumbNail = styled.img`
   object-fit: cover;
 `;
 
-export const ButtonInterest = styled.button`
-  position: absolute;
+export const IsButtonInterest = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  right: 16px;
-  top: 16px;
+  width: 60px;
+  height: 48px;
+  margin-top: 24px;
+  color: var(--color-white);
+  transition: 0.5 ease;
+  background-color: #ffc056;
+  border-radius: 8px;
+  padding: 6px;
+
+  & img {
+    width: 20px;
+    height: 20px;
+    -webkit-filter: invert(0); /* safari 6.0 - 9.0 */
+    filter: invert(0);
+    transition: 0.5 ease;
+  }
+`;
+
+export const SubTitle = styled.span`
+  color: var(--color-black);
+  display: flex;
+  align-items: center;
+`;
+
+export const ButtonInterest = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 48px;
+  margin-top: 24px;
   color: var(--color-white);
   transition: 0.5 ease;
   background-color: rgba(0, 0, 0, 0.6);
-  border: 1px solid var(--color-white);
-  border-radius: 30px;
+  border-radius: 8px;
   padding: 6px;
 
   &.active {
@@ -76,4 +104,67 @@ export const ButtonInterest = styled.button`
     -webkit-filter: invert(1); /* safari 6.0 - 9.0 */
     filter: invert(1);
   }
+`;
+
+export const DialogLayout = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  & img {
+    width: 100%;
+  }
+`;
+
+export const DialogContent = styled.div`
+  padding: 32px;
+
+  & h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  & p {
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 14px;
+
+    & span {
+      margin-top: -2px;
+      margin-right: 8px;
+    }
+  }
+`;
+
+export const DialogLeft = styled.div`
+  display: grid;
+  align-items: center;
+  border-right: 1px solid var(--color-line-gray-100);
+  background-color: var(--color-line-gray-200);
+`;
+
+export const ButtonClose = styled.button`
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  /* color: var(--color-white); */
+  transition: 0.5 ease;
+  padding: 10px;
+  border-radius: 30px;
+  font-size: 32px;
+
+  &:hover {
+    background-color: var(--color-line-gray-200);
+  }
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const ButtonSelectWrapper = styled.div`
+  display: flex;
+  margin: 12px 0;
 `;

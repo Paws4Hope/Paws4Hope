@@ -1,15 +1,15 @@
 import * as S from './Pets.styled';
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { AnimalApi, SidoApi } from '../../api/api';
+import { AnimalApi } from '../../api/api';
 import Modal from 'react-modal';
 import InterestButton from './InterestButton';
 import Loading from '../../components/Loading/Loading';
-import './PetsDetail.css';
+import './PetsModal.css';
 import Masonry from 'react-masonry-css';
 import { useSelector } from 'react-redux'; // Redux에서 상태 가져오기
 import { addAndDeleteInterest } from '../../api/interests'; // 사용자 정보 업데이트 함수 가져오기
-import IconInterest from '../../assets/images/ico_interest.svg';
+import { Button } from '../../components';
 
 Modal.setAppElement('#root'); // 모달을 사용할 루트 엘리먼트 설정
 
@@ -97,27 +97,70 @@ function Pets() {
     <S.Layout>
       <h1>동물 친구들을 소개합니다.</h1>
       <div className="button-group">
-        <button onClick={() => setSelectedAnimal('고양이')}>고양이</button>
-        <button onClick={() => setSelectedAnimal('개')}>강아지</button>
-        <button onClick={() => setSelectedAnimal('')}>전체</button>
-        <button onClick={() => setSidoState('6110000')}>서울</button>
-        <button onClick={() => setSidoState('6410000')}>경기도</button>
-        <button onClick={() => setSidoState('6260000')}>부산</button>
-        <button onClick={() => setSidoState('6270000')}>대구</button>
-        <button onClick={() => setSidoState('6280000')}>인천</button>
-        <button onClick={() => setSidoState('6290000')}>광주</button>
-        <button onClick={() => setSidoState('5690000')}>세종</button>
-        <button onClick={() => setSidoState('6300000')}>대전</button>
-        <button onClick={() => setSidoState('6310000')}>울산</button>
-        <button onClick={() => setSidoState('6410000')}>강원</button>
-        <button onClick={() => setSidoState('6430000')}>충북</button>
-        <button onClick={() => setSidoState('6440000')}>충남</button>
-        <button onClick={() => setSidoState('6450000')}>전북</button>
-        <button onClick={() => setSidoState('6460000')}>전남</button>
-        <button onClick={() => setSidoState('6470000')}>경북</button>
-        <button onClick={() => setSidoState('6480000')}>경남</button>
-        <button onClick={() => setSidoState('6500000')}>제주</button>
-
+        <S.ButtonSelectWrapper>
+          <Button variant="solid" color="black" onClick={() => setSelectedAnimal('')}>
+            전체
+          </Button>
+          <Button color="black" onClick={() => setSelectedAnimal('고양이')}>
+            고양이
+          </Button>
+          <Button color="black" onClick={() => setSelectedAnimal('개')}>
+            강아지
+          </Button>
+        </S.ButtonSelectWrapper>
+        <S.ButtonSelectWrapper>
+          <Button variant="solid" color="black" onClick={() => setSidoState('6110000')}>
+            서울
+          </Button>
+          <Button color="black" onClick={() => setSidoState('6410000')}>
+            경기도
+          </Button>
+          <Button color="black" onClick={() => setSidoState('6260000')}>
+            부산
+          </Button>
+          <Button color="black" onClick={() => setSidoState('6270000')}>
+            대구
+          </Button>
+          <Button color="black" onClick={() => setSidoState('6280000')}>
+            인천
+          </Button>
+          <Button color="black" onClick={() => setSidoState('6290000')}>
+            광주
+          </Button>
+          <Button color="black" onClick={() => setSidoState('5690000')}>
+            세종
+          </Button>
+          <Button color="black" onClick={() => setSidoState('6300000')}>
+            대전
+          </Button>
+          <Button color="black" onClick={() => setSidoState('6310000')}>
+            울산
+          </Button>
+          <Button color="black" onClick={() => setSidoState('6410000')}>
+            강원
+          </Button>
+          <Button color="black" onClick={() => setSidoState('6430000')}>
+            충북
+          </Button>
+          <Button color="black" onClick={() => setSidoState('6440000')}>
+            충남
+          </Button>
+          <Button color="black" onClick={() => setSidoState('6450000')}>
+            전북
+          </Button>
+          <Button color="black" onClick={() => setSidoState('6460000')}>
+            전남
+          </Button>
+          <Button color="black" onClick={() => setSidoState('6470000')}>
+            경북
+          </Button>
+          <Button color="black" onClick={() => setSidoState('6480000')}>
+            경남
+          </Button>
+          <Button color="black" onClick={() => setSidoState('6500000')}>
+            제주
+          </Button>
+        </S.ButtonSelectWrapper>
         {/* 다른 지역 버튼들도 추가할 수 있음 */}
       </div>
 
@@ -143,9 +186,16 @@ function Pets() {
                       onClick={() => openModal(animal)}
                     />
                   </S.Figure>
-                  <S.ButtonInterest className={`${isClicked ? 'active' : ''}`} onClick={toggleClassName}>
-                    <img src={IconInterest} />
-                  </S.ButtonInterest>
+                  {/* {loginUser.isLogin ? (
+                    <InterestButton
+                      animalId={animal.desertionNo}
+                      desertionNo={animal}
+                      isInterested={isInterested(animal.desertionNo)}
+                      toggleInterest={toggleInterest}
+                    />
+                  ) : (
+                    alert('회원만 가능합니다')
+                  )} */}
                 </S.PetWrapper>
               )}
               {/* 선택한 동물의 이미지를 모달에 표시 */}
@@ -157,42 +207,97 @@ function Pets() {
                   className="modal"
                   overlayClassName="modal-overlay"
                 >
-                  <div className="animal-detail-popup">
-                    <h2>상세 정보</h2>
-                    {/* 상세 정보 표시 */}
-                    <p>공고시작일: {selectedAnimalDetail.noticeSdt}</p>
-                    <p>공고종료일: {selectedAnimalDetail.noticeEdt}</p>
-                    <p>보호소: {selectedAnimalDetail.careNm}</p>
-                    <p>보호소 전화번호: {selectedAnimalDetail.careTel}</p>
-                    <p>품종: {selectedAnimalDetail.kindCd}</p>
-                    <p>색상: {selectedAnimalDetail.colorCd}</p>
-                    <p>중성화여부: {selectedAnimalDetail.neuterYn}</p>
-                    <p>나이: {selectedAnimalDetail.age}</p>
-                    <p>성별: {selectedAnimalDetail.sexCd}</p>
-                    <p>상태: {selectedAnimalDetail.processState}</p>
-                    <p>발견장소: {selectedAnimalDetail.happenPlace}</p>
-                    <p>특징: {selectedAnimalDetail.specialMark}</p>
-                    <p>유기번호: {selectedAnimalDetail.desertionNo}</p>
-                  </div>
-                  {/* 관심등록 버튼 */}
-                  {/* 로그인되었을 때만 보이도록 설정 */}
-                  <div className="buttonwithimg">
-                    {loginUser.isLogin && (
-                      <InterestButton
-                        animalId={animal.desertionNo}
-                        desertionNo={animal}
-                        isInterested={isInterested(animal.desertionNo)}
-                        toggleInterest={toggleInterest}
+                  <S.DialogLayout>
+                    <S.DialogLeft>
+                      <img
+                        className="animal-image-modal"
+                        src={selectedAnimalDetail.popfile}
+                        alt={`Animal ${selectedAnimalDetail.desertionNo}`}
                       />
-                    )}
-                    <img
-                      className="animal-image-modal"
-                      src={selectedAnimalDetail.popfile}
-                      alt={`Animal ${selectedAnimalDetail.desertionNo}`}
-                    />
-                    {/* 모달 닫기 버튼 */}
-                    <button onClick={closeModal}>닫기</button>
-                  </div>
+
+                      {/* 모달 닫기 버튼 */}
+                      <S.ButtonClose className="material-symbols-outlined" onClick={closeModal}>
+                        close
+                      </S.ButtonClose>
+                    </S.DialogLeft>
+                    <S.DialogContent className="animal-detail-popup">
+                      <h2>상세 정보</h2>
+                      {/* 상세 정보 표시 */}
+                      <p>
+                        <S.SubTitle>품종 : </S.SubTitle>
+                        {selectedAnimalDetail.kindCd}
+                      </p>
+                      <p>
+                        <S.SubTitle>나이: </S.SubTitle>
+                        {selectedAnimalDetail.age}
+                      </p>
+                      <p>
+                        <S.SubTitle>성별: </S.SubTitle>
+                        {selectedAnimalDetail.sexCd}
+                      </p>
+
+                      <p>
+                        <S.SubTitle>중성화여부: </S.SubTitle>
+                        {selectedAnimalDetail.neuterYn}
+                      </p>
+                      <p>
+                        <S.SubTitle>특징: </S.SubTitle>
+                        {selectedAnimalDetail.specialMark}
+                      </p>
+                      <p>
+                        <S.SubTitle>발견장소: </S.SubTitle>
+                        {selectedAnimalDetail.happenPlace}
+                      </p>
+
+                      <p>
+                        <S.SubTitle>색상: </S.SubTitle>
+                        {selectedAnimalDetail.colorCd}
+                      </p>
+                      <p>
+                        <S.SubTitle>상태: </S.SubTitle>
+                        {selectedAnimalDetail.processState}
+                      </p>
+                      <p>
+                        <S.SubTitle>유기번호: </S.SubTitle>
+                        {selectedAnimalDetail.desertionNo}
+                      </p>
+
+                      <p>
+                        <S.SubTitle>공고일 : </S.SubTitle>
+                        {selectedAnimalDetail.noticeSdt} ~ {selectedAnimalDetail.noticeEdt}
+                      </p>
+
+                      <p>
+                        <S.SubTitle>보호소: </S.SubTitle>
+                        {selectedAnimalDetail.careNm}
+                      </p>
+                      <p>
+                        <S.SubTitle>연락처:</S.SubTitle>
+                        {selectedAnimalDetail.careTel}
+                      </p>
+                      <S.ButtonWrapper>
+                        <Button
+                          variant="solid"
+                          color="black"
+                          size="Large"
+                          href={`tel: ${selectedAnimalDetail.careTel}`}
+                        >
+                          문의하기
+                        </Button>
+
+                        {/* 관심등록 버튼 */}
+                        {/* 로그인되었을 때만 보이도록 설정 */}
+                        {loginUser.isLogin && (
+                          <InterestButton
+                            animalId={animal.desertionNo}
+                            desertionNo={animal}
+                            isInterested={isInterested(animal.desertionNo)}
+                            toggleInterest={toggleInterest}
+                          />
+                        )}
+                      </S.ButtonWrapper>
+                    </S.DialogContent>
+                  </S.DialogLayout>
                 </Modal>
               )}
             </li>
