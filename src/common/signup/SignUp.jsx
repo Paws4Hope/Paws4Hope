@@ -55,6 +55,12 @@ function SignUp() {
             isLogin: true
           })
         );
+
+        // 회원가입 진행시 파이어베이스 컬렉션에 user 데이터 저장
+        const initialUser = {
+          uid: user?.uid,
+          interest: {}
+        };
       } catch (error) {
         console.log('사용자정보 업데이트 오류 : ', error.code);
       }

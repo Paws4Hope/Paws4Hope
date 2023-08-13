@@ -5,11 +5,11 @@ import { AnimalApi, SidoApi } from '../../api/api';
 import Modal from 'react-modal';
 import InterestButton from './InterestButton';
 import Loading from '../../components/Loading/Loading';
-import { styled } from 'styled-components';
 import './PetsDetail.css';
 import Masonry from 'react-masonry-css';
 import { useSelector } from 'react-redux'; // Redux에서 상태 가져오기
 import { addAndDeleteInterest } from '../../api/interests'; // 사용자 정보 업데이트 함수 가져오기
+import IconInterest from '../../assets/images/ico_interest.svg';
 
 Modal.setAppElement('#root'); // 모달을 사용할 루트 엘리먼트 설정
 
@@ -22,14 +22,9 @@ function Pets() {
   const [sidoState, setSidoState] = useState('6260000');
 
   // Masonry Layout 적용
-  // const breakPointPetsColumns = {
-  //   default: 4,
-  //   450: 1
-  // };
-
-  const breakpointBlogPostColumnsObj = {
+  const breakPointPetsColumn = {
     default: 4,
-    450: 1
+    640: 1
   };
 
   const { data, isLoading } = useQuery(['animalData', sidoState], () => AnimalApi(sidoState));
@@ -77,20 +72,6 @@ function Pets() {
     }
 
     try {
-      // firestore에 관심 정보 저장
-      // await db
-      //   .collection('users')
-      //   .doc(loginUser.uid)
-      //   .set(
-      //     {
-      //       interests: interests.reduce((acc, id) => {
-      //         acc[id] = true;
-      //         return acc;
-      //       }, {})
-      //     },
-      //     { merge: true }
-      //   );
-      // 토글 ? setUser(true) : setUser(false);
       addAndDeleteInterest({
         newInterest: { uid: loginUser.uid, animalId: animalId }
       });
@@ -104,10 +85,16 @@ function Pets() {
     return interests.includes(animalId);
   };
 
+  // 관심 클릭
+  const [isClicked, setIsClicked] = useState(false);
+  const toggleClassName = () => {
+    setIsClicked(!isClicked);
+  };
+
   if (isLoading) return <Loading />;
 
   return (
-    <div>
+    <S.Layout>
       <h1>동물 친구들을 소개합니다.</h1>
       <div className="button-group">
         <button onClick={() => setSelectedAnimal('고양이')}>고양이</button>
@@ -135,23 +122,31 @@ function Pets() {
       </div>
 
       {/* Masonry UI Layout */}
-      <S.BlogPostListContainer>
+      <S.PetsLayout>
         <Masonry
-          breakpointCols={breakpointBlogPostColumnsObj}
+          breakpointCols={breakPointPetsColumn}
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column"
         >
+          {/* 동물 데이터를 매핑하여 카드 표시 */}
           {filteredAnimals.map((animal) => (
-            <div key={animal.desertionNo} className="animal-card">
+            <li key={animal.desertionNo} className="animal-card">
               {/* 이미지 클릭 시 모달 열기 */}
               {/* 유기번호를 동물 고유아이디로 넘기기 */}
               {animal.processState.substring(0, 2) !== '종료' && (
-                <StPetImg
-                  className="animal-image"
-                  src={animal.popfile}
-                  alt={`Animal ${animal.desertionNo}`}
-                  onClick={() => openModal(animal)}
-                />
+                <S.PetWrapper>
+                  <S.Figure>
+                    <S.PetThumbNail
+                      className="animal-image"
+                      src={animal.popfile}
+                      alt={`Animal ${animal.desertionNo}`}
+                      onClick={() => openModal(animal)}
+                    />
+                  </S.Figure>
+                  <S.ButtonInterest className={`${isClicked ? 'active' : ''}`} onClick={toggleClassName}>
+                    <img src={IconInterest} />
+                  </S.ButtonInterest>
+                </S.PetWrapper>
               )}
               {/* 선택한 동물의 이미지를 모달에 표시 */}
               {selectedAnimalDetail === animal && (
@@ -182,14 +177,15 @@ function Pets() {
                   {/* 관심등록 버튼 */}
                   {/* 로그인되었을 때만 보이도록 설정 */}
                   <div className="buttonwithimg">
-                    {user && (
+                    {loginUser.isLogin && (
                       <InterestButton
                         animalId={animal.desertionNo}
+                        desertionNo={animal}
                         isInterested={isInterested(animal.desertionNo)}
                         toggleInterest={toggleInterest}
                       />
                     )}
-                    <StPetImg
+                    <img
                       className="animal-image-modal"
                       src={selectedAnimalDetail.popfile}
                       alt={`Animal ${selectedAnimalDetail.desertionNo}`}
@@ -199,84 +195,12 @@ function Pets() {
                   </div>
                 </Modal>
               )}
-            </div>
+            </li>
           ))}
         </Masonry>
-      </S.BlogPostListContainer>
-
-      <StPetImgBox className="album-container">
-        {/* 동물 데이터를 매핑하여 카드 표시 */}
-        {filteredAnimals.map((animal) => (
-          <div key={animal.desertionNo} className="animal-card">
-            {/* 이미지 클릭 시 모달 열기 */}
-            {/* 유기번호를 동물 고유아이디로 넘기기 */}
-            {animal.processState.substring(0, 2) !== '종료' && (
-              <StPetImg
-                className="animal-image"
-                src={animal.popfile}
-                alt={`Animal ${animal.desertionNo}`}
-                onClick={() => openModal(animal)}
-              />
-            )}
-            {/* 선택한 동물의 이미지를 모달에 표시 */}
-            {selectedAnimalDetail === animal && (
-              <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={closeModal}
-                contentLabel="Animal Detail Modal"
-                className="modal"
-                overlayClassName="modal-overlay"
-              >
-                <div className="animal-detail-popup">
-                  <h2>상세 정보</h2>
-                  {/* 상세 정보 표시 */}
-                  <p>공고시작일: {selectedAnimalDetail.noticeSdt}</p>
-                  <p>공고종료일: {selectedAnimalDetail.noticeEdt}</p>
-                  <p>보호소: {selectedAnimalDetail.careNm}</p>
-                  <p>보호소 전화번호: {selectedAnimalDetail.careTel}</p>
-                  <p>품종: {selectedAnimalDetail.kindCd}</p>
-                  <p>색상: {selectedAnimalDetail.colorCd}</p>
-                  <p>중성화여부: {selectedAnimalDetail.neuterYn}</p>
-                  <p>나이: {selectedAnimalDetail.age}</p>
-                  <p>성별: {selectedAnimalDetail.sexCd}</p>
-                  <p>상태: {selectedAnimalDetail.processState}</p>
-                  <p>발견장소: {selectedAnimalDetail.happenPlace}</p>
-                  <p>특징: {selectedAnimalDetail.specialMark}</p>
-                  <p>유기번호: {selectedAnimalDetail.desertionNo}</p>
-                </div>
-                {/* 관심등록 버튼 */}
-                {/* 로그인되었을 때만 보이도록 설정 */}
-                <div className="buttonwithimg">
-                  {loginUser.isLogin && (
-                    <InterestButton
-                      animalId={animal.desertionNo}
-                      desertionNo={animal}
-                      isInterested={isInterested(animal.desertionNo)}
-                      toggleInterest={toggleInterest}
-                    />
-                  )}
-                  <StPetImg
-                    className="animal-image-modal"
-                    src={selectedAnimalDetail.popfile}
-                    alt={`Animal ${selectedAnimalDetail.desertionNo}`}
-                  />
-                  {/* 모달 닫기 버튼 */}
-                  <button onClick={closeModal}>닫기</button>
-                </div>
-              </Modal>
-            )}
-          </div>
-        ))}
-      </StPetImgBox>
-    </div>
+      </S.PetsLayout>
+    </S.Layout>
   );
 }
 
 export default Pets;
-
-const StPetImgBox = styled.div``;
-const StPetImg = styled.img`
-  /* 이미지 너비 */
-  width: 500px;
-  margin-top: 20px; /* 이미지와 상세 정보 사이의 여백 조절 */
-`;
