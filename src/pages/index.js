@@ -10,3 +10,4 @@ export { default as SurveyForm } from './surveyForm/SurveyForm';
 export { default as Main } from './main/Main';
 export { default as Pets } from './pets/Pets';
 export { default as SurveyDone } from './surveyForm/SurveyDone';
+export { default as AdoptionProcess } from './adoptionProcess/AdoptionProcess';

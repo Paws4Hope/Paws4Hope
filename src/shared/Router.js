@@ -11,7 +11,8 @@ import {
   SurveyForm,
   SurveyDone,
   Signup,
-  Main
+  Main,
+  AdoptionProcess
 } from '../pages';
 import { GlobalLayout } from '../common';
 
@@ -23,6 +24,7 @@ const Router = () => {
         <Route path="/community" element={<Community />} />
         <Route path="/community/:id" element={<CommunityDetail />} />
         <Route path="/pets" element={<Pets />} />
+        <Route path="/adoption-process" element={<AdoptionProcess />} />
       </Route>
       <Route path="/community/edit/:id" element={<CommunityEdit />} />
       <Route path="/community/post" element={<CommunityPost />} />

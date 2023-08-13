@@ -17,7 +17,7 @@ const Header = () => {
             <img src={Logo} />
           </div>
           <S.Nav>
-            <S.NavItem>임시보호소개</S.NavItem>
+            <S.NavItem to="/adoption-process">입양절차</S.NavItem>
             <S.NavItem to="/pets">동물소개</S.NavItem>
             <S.NavItem>입양후기</S.NavItem>
             <S.NavItem to="/community">커뮤니티</S.NavItem>
