@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { AnimalApi, SidoApi } from '../../api/api';
 import Modal from 'react-modal';
@@ -6,28 +6,28 @@ import InterestButton from './InterestButton';
 import Loading from '../../components/Loading/Loading';
 import { styled } from 'styled-components';
 import './PetsDetail.css';
+import { useSelector } from 'react-redux'; // Redux에서 상태 가져오기
+import { addAndDeleteInterest } from '../../api/interests'; // 사용자 정보 업데이트 함수 가져오기
 
 Modal.setAppElement('#root'); // 모달을 사용할 루트 엘리먼트 설정
 
 function Pets() {
-  const [user, setUser] = useState(null); // 사용자 정보 상태
+  const loginUser = useSelector((state) => state.user); // 사용자 정보 상태
   const [interests, setInterests] = useState([]); // 관심 동물 리스트 //interests 고유번호 저장됨
   const [selectedAnimal, setSelectedAnimal] = useState('');
   const [selectedAnimalDetail, setSelectedAnimalDetail] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [sidoState, setSidoState] = useState('6260000');
-  const [selectedArea, setSelectedArea] = useState(null);
 
-  useEffect(() => {
-    setUser('asdasd');
-  }, []);
+  // useEffect(() => {
+  //   setUser('asdasd');
+  // }, []);
+  // const db = firebase.firestore();
 
   const { data, isLoading } = useQuery(['animalData', sidoState], () => AnimalApi(sidoState));
-  const { data: sido } = useQuery(['sidoData'], SidoApi);
+  //const { data: sido } = useQuery(['sidoData'], SidoApi);
 
-  console.log(data);
-
-  const sidoData = sido?.response?.body?.items?.item || [];
+  //const sidoData = sido?.response?.body?.items?.item || [];
   // ... (status 체크, 로딩 및 에러 처리 등)
 
   const animalItems = data?.response?.body?.items?.item || [];
@@ -46,18 +46,48 @@ function Pets() {
   };
 
   // 관심 버튼을 토글하는 함수
-  const toggleInterest = (animalId) => {
-    if (!user) {
+  const toggleInterest = async (animalId) => {
+    if (!loginUser.isLogin) {
       // 로그인하지 않았을 경우 처리
       return;
     }
 
+    const updatedInterests = isInterested(animalId)
+      ? interests.filter((id) => id !== animalId)
+      : [...interests, animalId];
+
+    setInterests(updatedInterests);
+
     if (isInterested(animalId)) {
       // 이미 관심 동물인 경우 제거
       setInterests(interests.filter((id) => id !== animalId));
+      window.alert('관심동물을 해지했습니다.');
     } else {
       // 관심 동물 리스트에 추가
       setInterests([...interests, animalId]);
+      window.alert('관심동물로 등록되었습니다');
+    }
+
+    try {
+      // firestore에 관심 정보 저장
+      // await db
+      //   .collection('users')
+      //   .doc(loginUser.uid)
+      //   .set(
+      //     {
+      //       interests: interests.reduce((acc, id) => {
+      //         acc[id] = true;
+      //         return acc;
+      //       }, {})
+      //     },
+      //     { merge: true }
+      //   );
+      // 토글 ? setUser(true) : setUser(false);
+      addAndDeleteInterest({
+        newInterest: { uid: loginUser.uid, animalId: animalId }
+      });
+    } catch (error) {
+      console.log('Error saving interest:', error);
     }
   };
 
@@ -139,9 +169,10 @@ function Pets() {
                 {/* 관심등록 버튼 */}
                 {/* 로그인되었을 때만 보이도록 설정 */}
                 <div className="buttonwithimg">
-                  {user && (
+                  {loginUser.isLogin && (
                     <InterestButton
                       animalId={animal.desertionNo}
+                      desertionNo={animal}
                       isInterested={isInterested(animal.desertionNo)}
                       toggleInterest={toggleInterest}
                     />

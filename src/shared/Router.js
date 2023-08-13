@@ -7,7 +7,6 @@ import {
   EditMyapge,
   Login,
   Mypage,
-  PetDetail,
   Pets,
   SurveyForm,
   SurveyDone,
@@ -23,12 +22,13 @@ const Router = () => {
         <Route path="/" element={<Main />} />
         <Route path="/community" element={<Community />} />
         <Route path="/community/:id" element={<CommunityDetail />} />
+        <Route path="/pets" element={<Pets />} />
       </Route>
       <Route path="/community/edit/:id" element={<CommunityEdit />} />
       <Route path="/community/post" element={<CommunityPost />} />
       <Route path="/mypage" element={<Mypage />} />
       <Route path="/mypage/edit" element={<EditMyapge />} />
-      <Route path="/pets" element={<Pets />} />
+
       <Route path="/surveyform" element={<SurveyForm />} />
       <Route path="/surveyDone" element={<SurveyDone />} />
 
