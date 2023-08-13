@@ -19,7 +19,7 @@ const addList = async ({ newPost, id }) => {
 };
 
 /* User 관심 파이어베이스 추가  */
-const addInterest = async ({ Interest, uid }) => {
+const addInterest2 = async ({ Interest, uid }) => {
   const newInterest = await addDoc(collection(db, 'interests'), Interest);
   // const newUsers = await setDoc(doc(db, 'users', uid), newUser);
 
@@ -34,4 +34,4 @@ const updateList = async ({ targetId, editedPost }) => {
   await updateDoc(doc(db, 'posts', targetId), editedPost);
 };
 
-export { getLists, addList, deleteList, updateList, addInterest };
+export { getLists, addList, deleteList, updateList, addInterest2 };

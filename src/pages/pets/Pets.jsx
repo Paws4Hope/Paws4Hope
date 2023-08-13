@@ -7,7 +7,7 @@ import Loading from '../../components/Loading/Loading';
 import { styled } from 'styled-components';
 import './PetsDetail.css';
 import { useSelector } from 'react-redux'; // Redux에서 상태 가져오기
-import { addInterest } from '../../api/interests'; // 사용자 정보 업데이트 함수 가져오기
+import { addAndDeleteInterest } from '../../api/interests'; // 사용자 정보 업데이트 함수 가져오기
 
 Modal.setAppElement('#root'); // 모달을 사용할 루트 엘리먼트 설정
 
@@ -26,8 +26,6 @@ function Pets() {
 
   const { data, isLoading } = useQuery(['animalData', sidoState], () => AnimalApi(sidoState));
   //const { data: sido } = useQuery(['sidoData'], SidoApi);
-
-  console.log(data);
 
   //const sidoData = sido?.response?.body?.items?.item || [];
   // ... (status 체크, 로딩 및 에러 처리 등)
@@ -85,9 +83,8 @@ function Pets() {
       //     { merge: true }
       //   );
       // 토글 ? setUser(true) : setUser(false);
-      addInterest({
-        newInterest: { uid: loginUser.uid, animalId: animalId },
-        uid: loginUser.uid
+      addAndDeleteInterest({
+        newInterest: { uid: loginUser.uid, animalId: animalId }
       });
     } catch (error) {
       console.log('Error saving interest:', error);
