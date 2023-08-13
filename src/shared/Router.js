@@ -7,7 +7,6 @@ import {
   EditMyapge,
   Login,
   Mypage,
-  PetDetail,
   Pets,
   SurveyForm,
   SurveyDone,
