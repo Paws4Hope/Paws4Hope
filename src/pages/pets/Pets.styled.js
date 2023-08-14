@@ -168,3 +168,34 @@ export const ButtonSelectWrapper = styled.div`
   display: flex;
   margin: 12px 0;
 `;
+
+export const Button = styled.a`
+  display: flex;
+  background-color: var(--color-black);
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding: 11px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 6px;
+  font-size: 16px;
+  transition: all 0.3 ease;
+  line-height: 1;
+  width: 100%;
+  height: 48px;
+  color: var(--color-white);
+  margin-top: 24px;
+  text-decoration: none;
+
+  &:hover {
+    opacity: 0.8;
+    transition: all 0.3 ease;
+  }
+
+  span {
+    color: var(--color-gray);
+    margin-right: 8px;
+    margin-top: -4px;
+  }
+`;

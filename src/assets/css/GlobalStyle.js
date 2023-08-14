@@ -55,6 +55,9 @@ const GlobalStyle = createGlobalStyle`
     'opsz' 48
     }
 
+    body.active {
+        overflow: hidden;
+    }
     
 
 `;

@@ -21,6 +21,14 @@ function Pets() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [sidoState, setSidoState] = useState('6260000');
 
+  useEffect(() => {
+    if (modalIsOpen) {
+      document.body.classList.add('active');
+    } else {
+      document.body.classList.remove('active');
+    }
+  }, [modalIsOpen]);
+
   // Masonry Layout 적용
   const breakPointPetsColumn = {
     default: 4,
@@ -276,14 +284,7 @@ function Pets() {
                         {selectedAnimalDetail.careTel}
                       </p>
                       <S.ButtonWrapper>
-                        <Button
-                          variant="solid"
-                          color="black"
-                          size="Large"
-                          href={`tel: ${selectedAnimalDetail.careTel}`}
-                        >
-                          문의하기
-                        </Button>
+                        <S.Button href={`tel: ${selectedAnimalDetail.careTel}`}>문의하기</S.Button>
 
                         {/* 관심등록 버튼 */}
                         {/* 로그인되었을 때만 보이도록 설정 */}
