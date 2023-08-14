@@ -1,19 +1,18 @@
 import * as S from './Pets.styled';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import IconInterest from '../../assets/images/ico_interest.svg';
 
-function InterestButton({ animalId, isInterested, toggleInterest }) {
+function InterestButton({ animal, isInterested, toggleInterest }) {
   // 관심 클릭
-  const [isClicked, setIsClicked] = useState(false);
+  const [isClicked, setIsClicked] = useState(isInterested);
   const toggleClassName = () => {
     setIsClicked(!isClicked);
   };
-
   return (
     <S.ButtonInterest
       className={`${isClicked ? 'active' : ''}`}
       onClick={() => {
-        toggleInterest(animalId);
+        toggleInterest(animal);
         toggleClassName();
       }}
     >

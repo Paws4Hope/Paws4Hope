@@ -21,13 +21,13 @@ const addAndDeleteInterest = async ({ newInterest }) => {
   const dbInterests = query(
     collection(db, 'interests'),
     where('uid', '==', newInterest.uid),
-    where('animalId', '==', newInterest.animalId)
+    where('desertionNo', '==', newInterest.desertionNo)
   );
 
   const userSnapshot = await getDocs(dbInterests);
   // 일치하는 데이터가 있으면 noneExist가 false 값 , 없으면 true
   userSnapshot.forEach((doc) => {
-    if (doc.data().uid === newInterest.uid && doc.data().animalId === newInterest.animalId) {
+    if (doc.data().uid === newInterest.uid && doc.data().desertionNo === newInterest.desertionNo) {
       noneExist = false;
       docId = doc.id;
     }
