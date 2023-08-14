@@ -6,6 +6,9 @@ import Modal from 'react-modal';
 import InterestButton from './InterestButton';
 import Loading from '../../components/Loading/Loading';
 import './PetsModal.css';
+import { auth } from '../../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { getInterest } from '../../api/interests';
 import Masonry from 'react-masonry-css';
 import { useSelector } from 'react-redux'; // Redux에서 상태 가져오기
 import { addAndDeleteInterest } from '../../api/interests'; // 사용자 정보 업데이트 함수 가져오기
@@ -20,6 +23,26 @@ function Pets() {
   const [selectedAnimalDetail, setSelectedAnimalDetail] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [sidoState, setSidoState] = useState('6260000');
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      let tempInterestArr = [];
+      if (user) {
+        // 사용자가 로그인한 경우에만 관심 동물 정보를 가져와서 설정
+        getInterest()
+          .then((getInterests) => {
+            const userInterests = getInterests.filter((interest) => interest.uid === user.uid);
+            userInterests.map((interest) => {
+              tempInterestArr.push(interest.desertionNo);
+            });
+            setInterests(tempInterestArr);
+          })
+          .catch((error) => {
+            console.error('Error fetching interests:', error);
+          });
+      }
+    });
+  }, []);
 
   // Masonry Layout 적용
   const breakPointPetsColumn = {
@@ -41,6 +64,7 @@ function Pets() {
   const openModal = (animal) => {
     setSelectedAnimalDetail(animal);
     setModalIsOpen(true);
+    console.log(interests);
   };
 
   const closeModal = () => {
@@ -49,31 +73,31 @@ function Pets() {
   };
 
   // 관심 버튼을 토글하는 함수
-  const toggleInterest = async (animalId) => {
+  const toggleInterest = async (animal) => {
     if (!loginUser.isLogin) {
       // 로그인하지 않았을 경우 처리
       return;
     }
 
-    const updatedInterests = isInterested(animalId)
-      ? interests.filter((id) => id !== animalId)
-      : [...interests, animalId];
+    const updatedInterests = isInterested(animal.desertionNo)
+      ? interests.filter((id) => id !== animal.desertionNo)
+      : [...interests, animal.desertionNo];
 
     setInterests(updatedInterests);
 
-    if (isInterested(animalId)) {
+    if (isInterested(animal.desertionNo)) {
       // 이미 관심 동물인 경우 제거
-      setInterests(interests.filter((id) => id !== animalId));
+      setInterests(interests.filter((id) => id !== animal.desertionNo));
       window.alert('관심동물을 해지했습니다.');
     } else {
       // 관심 동물 리스트에 추가
-      setInterests([...interests, animalId]);
+      setInterests([...interests, animal.desertionNo]);
       window.alert('관심동물로 등록되었습니다');
     }
 
     try {
       addAndDeleteInterest({
-        newInterest: { uid: loginUser.uid, animalId: animalId }
+        newInterest: { uid: loginUser.uid, ...animal }
       });
     } catch (error) {
       console.log('Error saving interest:', error);
@@ -289,8 +313,7 @@ function Pets() {
                         {/* 로그인되었을 때만 보이도록 설정 */}
                         {loginUser.isLogin && (
                           <InterestButton
-                            animalId={animal.desertionNo}
-                            desertionNo={animal}
+                            animal={animal}
                             isInterested={isInterested(animal.desertionNo)}
                             toggleInterest={toggleInterest}
                           />
