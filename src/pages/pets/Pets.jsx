@@ -125,7 +125,6 @@ function Pets() {
 
   return (
     <S.Layout>
-      <h1>동물 친구들을 소개합니다.</h1>
       <div className="button-group">
         <S.ButtonSelectWrapper>
           <Button variant="solid" color="black" onClick={() => setSelectedAnimal('')}>

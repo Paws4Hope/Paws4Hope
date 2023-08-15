@@ -19,7 +19,7 @@ const addAndDeleteInterest = async ({ newInterest }) => {
   let docId = '';
   // 파이어스토어에 query를 이용해 로그인한 계정의 uid 와 동물의 유기번호가 일치하는 데이터가 있는지 찾음
   const dbInterests = query(
-    collection(db, 'interests'),
+    collection(db, 'interests m-====='),
     where('uid', '==', newInterest.uid),
     where('desertionNo', '==', newInterest.desertionNo)
   );

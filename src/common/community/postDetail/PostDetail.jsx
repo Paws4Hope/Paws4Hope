@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getLists } from '../../../api/lists';
 import { Button } from '../../../components';
 import { useSelector } from 'react-redux';
+import Comments from '../../comments/Comments';
 
 const PostDetail = () => {
   const { id } = useParams();
@@ -61,33 +62,7 @@ const PostDetail = () => {
           <S.Content>{findPost.content}</S.Content>
         </div>
 
-        <S.CommentLayout>
-          <S.CommentTitle>
-            댓글<span>12</span>
-          </S.CommentTitle>
-          {/* 댓글 레이아웃 */}
-          <S.CommentInner>
-            {/* 댓글 */}
-            <S.CommentProfileWrapper>
-              <S.AvatarFigure></S.AvatarFigure>
-              <div>
-                <S.ProfileUl>
-                  <S.DisplayName>작성자</S.DisplayName>
-                  <S.ProfileTime>시간</S.ProfileTime>
-                </S.ProfileUl>
-                <S.Comment>댓글내용</S.Comment>
-              </div>
-            </S.CommentProfileWrapper>
-
-            {/* 텍스트 입력창 */}
-            <S.CommentForm>
-              <S.Textarea placeholder="댓글을 입력해보세요!"></S.Textarea>
-              <Button variant="solid" color="black">
-                등록
-              </Button>
-            </S.CommentForm>
-          </S.CommentInner>
-        </S.CommentLayout>
+        <Comments postId={id} />
       </S.Layout>
     </>
   );
